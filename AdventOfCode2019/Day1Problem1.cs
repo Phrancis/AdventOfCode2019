@@ -11,15 +11,14 @@ namespace AdventOfCode2019
     {
         public readonly string ProblemUrl = "https://adventofcode.com/2019/day/1";
         public readonly string ProblemTitle = "Day 1: The Tyranny of the Rocket Equation";
-        public readonly string InputFilePath = @"..\..\D1P1.txt";
+        public readonly string FileName = "D1P1.txt";
+        private InputGetter inputGetter;
         private string rawInput;
 
         public Day1Problem1()
         {
-            using (StreamReader reader = new StreamReader(InputFilePath))
-            {
-                rawInput = reader.ReadToEnd();
-            }
+            inputGetter = new InputGetter();
+            rawInput = inputGetter.GetRawString(FileName);           
         }
 
         public int SolveProblem()

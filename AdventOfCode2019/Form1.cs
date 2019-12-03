@@ -27,18 +27,23 @@ namespace AdventOfCode2019
 
         private void SolveButton_Click(object sender, EventArgs e)
         {
-            int result;
+            string result;
             switch (ProblemSelector.GetItemText(ProblemSelector.SelectedItem))
             {
                 case "Day 1 Problem 1":
                     Day1Problem1 d1p1 = new Day1Problem1();
-                    result = d1p1.SolveProblem();
-                    UpdateForm(d1p1.ProblemTitle, d1p1.ProblemUrl, d1p1.InputFilePath, result.ToString());
+                    result = d1p1.SolveProblem().ToString();
+                    UpdateForm(d1p1.ProblemTitle, d1p1.ProblemUrl, d1p1.FileName, result);
                     break;
                 case "Day 1 Problem 2":
                     Day1Problem2 d1p2 = new Day1Problem2();
-                    result = d1p2.SolveProblem();
-                    UpdateForm(d1p2.ProblemTitle, d1p2.ProblemUrl, d1p2.InputFilePath, result.ToString());
+                    result = d1p2.SolveProblem().ToString();
+                    UpdateForm(d1p2.ProblemTitle, d1p2.ProblemUrl, d1p2.FileName, result);
+                    break;
+                case "Day 2 Problem 1":
+                    Day2Problem1 d2p1 = new Day2Problem1();
+                    result = d2p1.SolveProblem().ToString();
+                    UpdateForm(d2p1.ProblemTitle, d2p1.ProblemUrl, d2p1.FileName, result);
                     break;
                 default:
                     MessageBox.Show("Invalid problem selection.");

@@ -48,12 +48,15 @@
   <ItemGroup>
     <Compile Include="Day1Problem1.cs" />
     <Compile Include="Day1Problem2.cs" />
+    <Compile Include="Day2Problem1.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="InputGetter.cs" />
+    <Compile Include="IntcodeComputer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

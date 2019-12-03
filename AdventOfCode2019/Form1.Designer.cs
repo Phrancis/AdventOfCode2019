@@ -47,7 +47,8 @@
             this.ProblemSelector.FormattingEnabled = true;
             this.ProblemSelector.Items.AddRange(new object[] {
             "Day 1 Problem 1",
-            "Day 1 Problem 2"});
+            "Day 1 Problem 2",
+            "Day 2 Problem 1"});
             this.ProblemSelector.Location = new System.Drawing.Point(94, 13);
             this.ProblemSelector.Name = "ProblemSelector";
             this.ProblemSelector.Size = new System.Drawing.Size(479, 28);
