@@ -29,8 +29,9 @@ namespace AdventOfCode2019
 
         public void ResetToInitialMemory() => workingMemory = initialMemory;
 
-        private List<int> ComputeIntcodes(int noun = 0, int verb = 0)
+        public List<int> ComputeOpcodes(int noun = 0, int verb = 0)
         {
+            ResetToInitialMemory();
             workingMemory[1] = noun;
             workingMemory[2] = verb;
 

@@ -23,43 +23,10 @@ namespace AdventOfCode2019
 
         internal int SolveProblem()
         {
-            List<int> inputs = new List<int>();
-            foreach (string s in rawInput.Split(','))
-            {
-                inputs.Add(Int32.Parse(s));
-            }
-            // Special instructions for 1202 program
-            inputs[1] = 12;
-            inputs[2] = 2;
-            List<int> results = ComputeIntcodes(inputs);
-            Console.WriteLine(results[0]);
-            return results[0];
-        }
-
-        private List<int> ComputeIntcodes(List<int> inputs)
-        {
-            bool programEnded = false;
-            int i = 0;
-            while (!programEnded)
-            {
-                int operation = inputs[i];
-                // Code 99 indicates end of Intcode program
-                if (operation == 99)
-                {
-                    programEnded = true;
-                    break;
-                }
-                int value1 = inputs[inputs[i + 1]];
-                int value2 = inputs[inputs[i + 2]];
-                if (operation == 1)
-                    inputs[inputs[i + 3]] = value1 + value2;
-                else if (operation == 2)
-                    inputs[inputs[i + 3]] = value1 * value2;
-                else
-                    throw new InvalidOperationException();
-                i += 4;
-            }
-            return inputs;
+            IntcodeComputer computer = new IntcodeComputer(rawInput);
+            List<int> result = computer.ComputeOpcodes(12, 2);
+            Console.WriteLine(result.ToString());
+            return result[0];
         }
     }
 }
