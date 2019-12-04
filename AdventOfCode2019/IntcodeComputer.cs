@@ -34,8 +34,6 @@ namespace AdventOfCode2019
             ResetToInitialMemory();
             workingMemory[1] = noun;
             workingMemory[2] = verb;
-            // Debug
-            Console.WriteLine(workingMemory.ToString());
 
             bool programEnded = false;
             int ptr = 0;

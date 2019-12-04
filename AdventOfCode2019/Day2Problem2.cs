@@ -31,15 +31,13 @@ namespace AdventOfCode2019
                 for (int verb = 0; verb < 100; verb++)
                 {
                     results = computer.ComputeOpcodes(noun, verb);
-                    Console.WriteLine(results.ToString());
                     if (results[0] == targetOutput)
                     {
-                        Console.WriteLine((noun * 100) + verb);
                         return (noun * 100) + verb;
                     }
                 }
             }
-            throw new Exception("Solution could not be found");
+            throw new Exception("Solution could not be found.");
         }
     }
 }
