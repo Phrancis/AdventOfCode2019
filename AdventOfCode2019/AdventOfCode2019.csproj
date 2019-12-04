@@ -49,6 +49,7 @@
     <Compile Include="Day1Problem1.cs" />
     <Compile Include="Day1Problem2.cs" />
     <Compile Include="Day2Problem1.cs" />
+    <Compile Include="Day2Problem2.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

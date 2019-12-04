@@ -14,7 +14,7 @@ namespace AdventOfCode2019
         public IntcodeComputer(List<int> memoryList)
         {
             initialMemory = memoryList;
-            workingMemory = initialMemory;
+            workingMemory = new List<int>(initialMemory);
         }
 
         public IntcodeComputer(string rawMemory, char separator = ',')
@@ -24,16 +24,18 @@ namespace AdventOfCode2019
             {
                 initialMemory.Add(Int32.Parse(item));
             }
-            workingMemory = initialMemory;
+            workingMemory = new List<int>(initialMemory);
         }
 
-        public void ResetToInitialMemory() => workingMemory = initialMemory;
+        public void ResetToInitialMemory() => workingMemory = new List<int>(initialMemory);
 
         public List<int> ComputeOpcodes(int noun = 0, int verb = 0)
         {
             ResetToInitialMemory();
             workingMemory[1] = noun;
             workingMemory[2] = verb;
+            // Debug
+            Console.WriteLine(workingMemory.ToString());
 
             bool programEnded = false;
             int ptr = 0;
@@ -53,7 +55,7 @@ namespace AdventOfCode2019
                 else if (operation == 2)
                     workingMemory[workingMemory[ptr + 3]] = value1 * value2;
                 else
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException($"Operation # {operation} is not a valid Opcode.");
                 ptr += 4;
             }
             return workingMemory;

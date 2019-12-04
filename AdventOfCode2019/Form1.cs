@@ -45,6 +45,11 @@ namespace AdventOfCode2019
                     result = d2p1.SolveProblem().ToString();
                     UpdateForm(d2p1.ProblemTitle, d2p1.ProblemUrl, d2p1.FileName, result);
                     break;
+                case "Day 2 Problem 2":
+                    Day2Problem2 d2p2 = new Day2Problem2();
+                    result = d2p2.SolveProblem().ToString();
+                    UpdateForm(d2p2.ProblemTitle, d2p2.ProblemUrl, d2p2.FileName, result);
+                    break;
                 default:
                     MessageBox.Show("Invalid problem selection.");
                     break;
