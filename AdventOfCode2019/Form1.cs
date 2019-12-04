@@ -17,14 +17,6 @@ namespace AdventOfCode2019
             InitializeComponent();
         }
 
-        private void UpdateForm(string title, string url, string inputFile, string result)
-        {
-            TitleTextBox.Text = title;
-            URLTextBox.Text = url;
-            InputFileTextBox.Text = inputFile;
-            ResultTextBox.Text = result;
-        }
-
         private void UpdateForm(IAdventOfCodeProblem problem)
         {
             TitleTextBox.Text = problem.ProblemTitle();
@@ -39,29 +31,19 @@ namespace AdventOfCode2019
             switch (ProblemSelector.GetItemText(ProblemSelector.SelectedItem))
             {
                 case "Day 1 Problem 1":
-                    Day1Problem1 d1p1 = new Day1Problem1();
-                    result = d1p1.SolveProblem().ToString();
-                    UpdateForm(d1p1.ProblemTitle, d1p1.ProblemUrl, d1p1.FileName, result);
+                    UpdateForm(new Day1Problem1());
                     break;
                 case "Day 1 Problem 2":
-                    Day1Problem2 d1p2 = new Day1Problem2();
-                    result = d1p2.SolveProblem().ToString();
-                    UpdateForm(d1p2.ProblemTitle, d1p2.ProblemUrl, d1p2.FileName, result);
+                    UpdateForm(new Day1Problem2());
                     break;
                 case "Day 2 Problem 1":
-                    Day2Problem1 d2p1 = new Day2Problem1();
-                    result = d2p1.SolveProblem().ToString();
-                    UpdateForm(d2p1.ProblemTitle, d2p1.ProblemUrl, d2p1.FileName, result);
+                    UpdateForm(new Day2Problem1());
                     break;
                 case "Day 2 Problem 2":
-                    Day2Problem2 d2p2 = new Day2Problem2();
-                    result = d2p2.SolveProblem().ToString();
-                    UpdateForm(d2p2.ProblemTitle, d2p2.ProblemUrl, d2p2.FileName, result);
+                    UpdateForm(new Day2Problem2());
                     break;
                 case "Day 3 Problem 1":
-                    Day3Problem1 d3p1 = new Day3Problem1();
-                    result = d3p1.SolveProblem().ToString();
-                    UpdateForm(d3p1.problemTitle, d3p1.problemUrl, d3p1.fileName, result);
+                    UpdateForm(new Day3Problem1());
                     break;
                 default:
                     MessageBox.Show("Invalid problem selection.");

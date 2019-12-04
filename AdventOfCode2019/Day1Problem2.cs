@@ -7,11 +7,11 @@ using System.IO;
 
 namespace AdventOfCode2019
 {
-    class Day1Problem2
+    class Day1Problem2 : IAdventOfCodeProblem
     {
-        public readonly string ProblemUrl = "https://adventofcode.com/2019/day/1#part2";
-        public readonly string ProblemTitle = "Day 1: The Tyranny of the Rocket Equation - Part 2";
-        public readonly string FileName = "D1P1.txt";
+        private readonly string problemUrl = "https://adventofcode.com/2019/day/1#part2";
+        private readonly string problemTitle = "Day 1: The Tyranny of the Rocket Equation - Part 2";
+        private readonly string fileName = "D1P1.txt";
         private InputGetter inputGetter;
         private string rawInput;
         private Day1Problem1 d1p1;
@@ -22,10 +22,16 @@ namespace AdventOfCode2019
         {
             d1p1 = new Day1Problem1();
             inputGetter = new InputGetter();
-            rawInput = inputGetter.GetRawString(FileName);
+            rawInput = inputGetter.GetRawString(fileName);
             fuelForModules = new List<int>();
             fuelForFuel = new List<int>();
         }
+
+        public string ProblemUrl() => problemUrl;
+
+        public string ProblemTitle() => problemTitle;
+
+        public string FileName() => fileName;
 
         public int SolveProblem()
         {

@@ -6,19 +6,25 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode2019
 {
-    class Day2Problem2
+    class Day2Problem2 : IAdventOfCodeProblem
     {
-        public readonly string ProblemUrl = "https://adventofcode.com/2019/day/2#part2";
-        public readonly string ProblemTitle = "Day 2: 1202 Program Alarm - Part 2";
-        public readonly string FileName = "D2P1.txt";
+        private readonly string problemUrl = "https://adventofcode.com/2019/day/2#part2";
+        private readonly string problemTitle = "Day 2: 1202 Program Alarm - Part 2";
+        private readonly string fileName = "D2P1.txt";
         private InputGetter inputGetter;
         private string rawInput;
 
         public Day2Problem2()
         {
             inputGetter = new InputGetter();
-            rawInput = inputGetter.GetRawString(FileName);
+            rawInput = inputGetter.GetRawString(fileName);
         }
+
+        public string FileName() => fileName;
+
+        public string ProblemTitle() => problemTitle;
+
+        public string ProblemUrl() => problemUrl;
 
         public int SolveProblem()
         {

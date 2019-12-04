@@ -7,19 +7,25 @@ using System.IO;
 
 namespace AdventOfCode2019
 {
-    class Day1Problem1
+    class Day1Problem1 :IAdventOfCodeProblem
     {
-        public readonly string ProblemUrl = "https://adventofcode.com/2019/day/1";
-        public readonly string ProblemTitle = "Day 1: The Tyranny of the Rocket Equation";
-        public readonly string FileName = "D1P1.txt";
+        private readonly string problemUrl = "https://adventofcode.com/2019/day/1";
+        private readonly string problemTitle = "Day 1: The Tyranny of the Rocket Equation";
+        private readonly string fileName = "D1P1.txt";
         private InputGetter inputGetter;
         private string rawInput;
 
         public Day1Problem1()
         {
             inputGetter = new InputGetter();
-            rawInput = inputGetter.GetRawString(FileName);           
+            rawInput = inputGetter.GetRawString(fileName);           
         }
+
+        public string ProblemUrl() => problemUrl;
+
+        public string ProblemTitle() => problemTitle;
+
+        public string FileName() => fileName;
 
         public int SolveProblem()
         {

@@ -6,9 +6,9 @@ namespace AdventOfCode2019
 {
     internal class Day3Problem1 : IAdventOfCodeProblem
     {
-        public readonly string problemUrl = "https://adventofcode.com/2019/day/3";
-        public readonly string problemTitle = "Day 3: Crossed Wires";
-        public readonly string fileName = "D3P1.txt";
+        private readonly string problemUrl = "https://adventofcode.com/2019/day/3";
+        private readonly string problemTitle = "Day 3: Crossed Wires";
+        private readonly string fileName = "D3P1.txt";
         private InputGetter inputGetter;
         private string rawInput;
 
@@ -17,6 +17,12 @@ namespace AdventOfCode2019
             inputGetter = new InputGetter();
             rawInput = inputGetter.GetRawString(fileName);
         }
+
+        public string FileName() => fileName;
+
+        public string ProblemTitle() => problemTitle;
+
+        public string ProblemUrl() => problemUrl;
 
         public int SolveProblem()
         {
@@ -81,11 +87,5 @@ namespace AdventOfCode2019
             }
             return points;
         }
-
-        public string FileName() => fileName;
-
-        public string ProblemTitle() => problemTitle;
-
-        public string ProblemUrl() => problemUrl;
     }
 }
