@@ -17,6 +17,20 @@ namespace AdventOfCode2019
             Y = y;
         }
 
+        public Point2D UpdateIncremental(int x, int y)
+        {
+            X += x;
+            Y += y;
+            return this;
+        }
+
+        public Point2D UpdateAbsolute(int x, int y)
+        {
+            X = x;
+            Y = y;
+            return this;
+        }
+
         public override bool Equals(object obj)
         {
             var d = obj as Point2D;
