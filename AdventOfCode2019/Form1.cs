@@ -25,6 +25,14 @@ namespace AdventOfCode2019
             ResultTextBox.Text = result;
         }
 
+        private void UpdateForm(IAdventOfCodeProblem problem)
+        {
+            TitleTextBox.Text = problem.ProblemTitle();
+            URLTextBox.Text = problem.ProblemUrl();
+            InputFileTextBox.Text = problem.FileName();
+            ResultTextBox.Text = problem.SolveProblem().ToString();
+        }
+
         private void SolveButton_Click(object sender, EventArgs e)
         {
             string result;
@@ -52,7 +60,8 @@ namespace AdventOfCode2019
                     break;
                 case "Day 3 Problem 1":
                     Day3Problem1 d3p1 = new Day3Problem1();
-
+                    result = d3p1.SolveProblem().ToString();
+                    UpdateForm(d3p1.problemTitle, d3p1.problemUrl, d3p1.fileName, result);
                     break;
                 default:
                     MessageBox.Show("Invalid problem selection.");
