@@ -27,7 +27,6 @@ namespace AdventOfCode2019
 
         private void SolveButton_Click(object sender, EventArgs e)
         {
-            string result;
             switch (ProblemSelector.GetItemText(ProblemSelector.SelectedItem))
             {
                 case "Day 1 Problem 1":
