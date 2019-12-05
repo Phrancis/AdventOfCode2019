@@ -51,6 +51,7 @@
     <Compile Include="Day2Problem1.cs" />
     <Compile Include="Day2Problem2.cs" />
     <Compile Include="Day3Problem1.cs" />
+    <Compile Include="Day3Problem2.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -61,7 +62,6 @@
     <Compile Include="InputGetter.cs" />
     <Compile Include="IntcodeComputer.cs" />
     <Compile Include="Opcode.cs" />
-    <Compile Include="Point2D.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
