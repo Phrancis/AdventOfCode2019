@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Drawing;
 
 namespace AdventOfCode2019
 {
@@ -24,33 +25,42 @@ namespace AdventOfCode2019
 
         public string ProblemUrl() => problemUrl;
 
+        public string RawInput() => rawInput;
+
         public int SolveProblem()
         {
             string[] input = rawInput.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             List<string> wire1Data = new List<string>(input[0].Split(','));
             List<string> wire2Data = new List<string>(input[1].Split(','));
 
-            List<Point2D> wire1Points = CalculatePoints(wire1Data);
-            List<Point2D> wire2Points = CalculatePoints(wire2Data);
+            List<Point> wire1Points = CalculatePoints(wire1Data);
+            List<Point> wire2Points = CalculatePoints(wire2Data);
 
-            IEnumerable<Point2D> crossings = from point in wire1Points.Intersect(wire2Points)
+            IEnumerable<Point> crossings = from point in wire1Points.Intersect(wire2Points)
                                              select point;
 
             List<int> distances = new List<int>();
-            foreach (Point2D c in crossings)
+            foreach (Point c in crossings)
             {
-                distances.Add(c.DistanceFromOrigin());
+                distances.Add(DistanceFromOrigin(c));
             }
             distances.Sort();
-            // Skipping first value of 0 for origin point
-            return distances[1];
+            // Skipping first values of possible 0 distance for origin point
+            for (int i = 0; i < distances.Count; i++)
+            {
+                if (distances[i] != 0)
+                {
+                    return distances[i];
+                }
+            }
+            return 0;
         }
 
-        private List<Point2D> CalculatePoints(List<string> instructions)
+        private List<Point> CalculatePoints(List<string> instructions)
         {
-            List<Point2D> points = new List<Point2D>();
-            Point2D currentPoint = new Point2D(0, 0);
-            points.Add(new Point2D(currentPoint));
+            List<Point> points = new List<Point>();
+            Point currentPoint = new Point(0, 0);
+            points.Add(new Point(currentPoint.X, currentPoint.Y));
             foreach (string inst in instructions)
             {
                 char direction = inst[0];
@@ -60,25 +70,29 @@ namespace AdventOfCode2019
                     case 'U':
                         for (int d = distance; d > 0; d--)
                         {
-                            points.Add(new Point2D(currentPoint.UpdateIncremental(0, 1)));
+                            currentPoint += new Size(0, 1);
+                            points.Add(currentPoint);
                         }
                         break;
                     case 'D':
                         for (int d = distance; d > 0; d--)
                         {
-                            points.Add(new Point2D(currentPoint.UpdateIncremental(0, -1)));
+                            currentPoint += new Size(0, -1);
+                            points.Add(currentPoint);
                         }
                         break;
                     case 'R':
                         for (int d = distance; d > 0; d--)
                         {
-                            points.Add(new Point2D(currentPoint.UpdateIncremental(1, 0)));
+                            currentPoint += new Size(1, 0);
+                            points.Add(currentPoint);
                         }
                         break;
                     case 'L':
                         for (int d = distance; d > 0; d--)
                         {
-                            points.Add(new Point2D(currentPoint.UpdateIncremental(-1, 0)));
+                            currentPoint += new Size(-1, 0);
+                            points.Add(currentPoint);
                         }
                         break;
                     default:
@@ -87,5 +101,7 @@ namespace AdventOfCode2019
             }
             return points;
         }
+
+        private int DistanceFromOrigin(Point point) => Math.Abs(point.X) + Math.Abs(point.Y);
     }
 }
