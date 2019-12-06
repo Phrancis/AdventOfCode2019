@@ -13,6 +13,10 @@ namespace AdventOfCode2019
         private InputGetter inputGetter;
         private string rawInput;
 
+        public List<Point> wire1Points { get; private set; }
+        public List<Point> wire2Points { get; private set; }
+        public IEnumerable<Point>  crossings { get; private set; }
+
         public Day3Problem1()
         {
             inputGetter = new InputGetter();
@@ -33,27 +37,25 @@ namespace AdventOfCode2019
             List<string> wire1Data = new List<string>(input[0].Split(','));
             List<string> wire2Data = new List<string>(input[1].Split(','));
 
-            List<Point> wire1Points = CalculatePoints(wire1Data);
-            List<Point> wire2Points = CalculatePoints(wire2Data);
+            wire1Points = CalculatePoints(wire1Data);
+            wire2Points = CalculatePoints(wire2Data);
 
-            IEnumerable<Point> crossings = from point in wire1Points.Intersect(wire2Points)
-                                             select point;
+            crossings = from point in wire1Points.Intersect(wire2Points)
+                        select point;
 
             List<int> distances = new List<int>();
             foreach (Point c in crossings)
             {
                 distances.Add(DistanceFromOrigin(c));
             }
-            distances.Sort();
-            // Skipping first values of possible 0 distance for origin point
-            for (int i = 0; i < distances.Count; i++)
+
+            int shortestDistance = int.MaxValue;
+            foreach (int d in distances)
             {
-                if (distances[i] != 0)
-                {
-                    return distances[i];
-                }
+                if (d != 0 && d < shortestDistance)
+                    shortestDistance = d;
             }
-            return 0;
+            return shortestDistance;
         }
 
         private List<Point> CalculatePoints(List<string> instructions)
