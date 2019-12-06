@@ -52,7 +52,7 @@ namespace AdventOfCode2019
             int shortestDistance = int.MaxValue;
             foreach (int d in distances)
             {
-                if (d != 0 && d < shortestDistance)
+                if (d < shortestDistance)
                     shortestDistance = d;
             }
             return shortestDistance;
@@ -62,7 +62,6 @@ namespace AdventOfCode2019
         {
             List<Point> points = new List<Point>();
             Point currentPoint = new Point(0, 0);
-            points.Add(new Point(currentPoint.X, currentPoint.Y));
             foreach (string inst in instructions)
             {
                 char direction = inst[0];
