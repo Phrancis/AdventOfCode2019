@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdventOfCode2019
 {
@@ -44,12 +42,7 @@ namespace AdventOfCode2019
 
         private bool Has2AdjacentDigitsNotPartOfAGroup(int[] digits)
         {
-            bool has2AdjacentDigitsNotPartOfAGroup = false;
-            var groups = digits.GroupBy(d => d);
-            foreach (var g in groups)
-                if (g.Count() == 2)
-                    has2AdjacentDigitsNotPartOfAGroup = true;
-            return has2AdjacentDigitsNotPartOfAGroup;
+            return digits.GroupBy(d => d).Any(g => g.Count() == 2);
         }
     }
 }
