@@ -33,7 +33,7 @@ namespace AdventOfCode2019
             {
                 for (int verb = 0; verb < 100; verb++)
                 {
-                    results = computer.ComputeOpcodes(noun, verb);
+                    results = computer.ComputeOpcodes2(noun, verb);
                     if (results[0] == targetOutput)
                     {
                         return (noun * 100) + verb;

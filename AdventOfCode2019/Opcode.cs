@@ -10,6 +10,8 @@ namespace AdventOfCode2019
     {
         Add = 1,
         Multiply = 2,
+        SaveInputToPosition = 3,
+        OutputValueAtPosition = 4,
         Halt = 99,
     }
 }
