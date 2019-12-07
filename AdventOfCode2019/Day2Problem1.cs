@@ -27,7 +27,6 @@ namespace AdventOfCode2019
         {
             IntcodeComputer computer = new IntcodeComputer(rawInput);
             List<int> result = computer.ComputeOpcodes(12, 2);
-            Console.WriteLine(result.ToString());
             return result[0];
         }
     }

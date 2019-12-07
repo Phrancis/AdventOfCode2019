@@ -27,7 +27,6 @@ namespace AdventOfCode2019
         {
             int targetOutput = 19690720;
             List<int> results;
-            Console.WriteLine(rawInput);
             IntcodeComputer computer = new IntcodeComputer(rawInput);
             for (int noun = 0; noun < 100; noun++)
             {
