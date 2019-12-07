@@ -10,6 +10,7 @@ namespace AdventOfCode2019
         private readonly string fileName = "D4P1.txt";
         private InputGetter inputGetter;
         private string rawInput;
+        public List<int> QualifiedPasswords { get; private set; }
 
         public Day4Problem1()
         {
@@ -28,18 +29,18 @@ namespace AdventOfCode2019
             string[] range = rawInput.Split('-');
             int rangeMin = int.Parse(range[0]);
             int rangeMax = int.Parse(range[1]);
-            List<int> qualifiedPasswords = new List<int>();
+            QualifiedPasswords = new List<int>();
 
             for (int password = rangeMin; password <= rangeMax; password++)
             {
                 int[] digits = ConvertIntToDigits(password);
                 if (AllDigitsIncreasing(digits) && HasSameAdjacentDigits(digits))                
-                    qualifiedPasswords.Add(password);
+                    QualifiedPasswords.Add(password);
             }
-            return qualifiedPasswords.Count;
+            return QualifiedPasswords.Count;
         }
 
-        private int[] ConvertIntToDigits(int number) => number.ToString().Select(d => int.Parse(d.ToString())).ToArray();
+        public int[] ConvertIntToDigits(int number) => number.ToString().Select(d => int.Parse(d.ToString())).ToArray();
 
         private bool AllDigitsIncreasing(int[] digits)
         {
