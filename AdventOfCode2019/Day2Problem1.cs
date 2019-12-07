@@ -26,7 +26,7 @@ namespace AdventOfCode2019
         public int SolveProblem()
         {
             IntcodeComputer computer = new IntcodeComputer(rawInput);
-            List<int> result = computer.ComputeOpcodes2(12, 2);
+            List<int> result = computer.ComputeOpcodes(12, 2);
             Console.WriteLine(result.ToString());
             return result[0];
         }

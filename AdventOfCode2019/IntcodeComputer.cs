@@ -26,7 +26,7 @@ namespace AdventOfCode2019
 
         public void ResetToInitialMemory() => workingMemory = new List<int>(initialMemory);
 
-        public List<int> ComputeOpcodes2(int noun = 0, int verb = 0)
+        public List<int> ComputeOpcodes(int noun = 0, int verb = 0)
         {
             ResetToInitialMemory();
             workingMemory[1] = noun;
@@ -65,36 +65,6 @@ namespace AdventOfCode2019
                         throw new InvalidOperationException($"Operation # {opcode} is not a valid Opcode.");
                 }
                 ptr += instructionLength;
-            }
-            return workingMemory;
-        }
-
-        public List<int> ComputeOpcodes(int noun = 0, int verb = 0)
-        {
-            ResetToInitialMemory();
-            workingMemory[1] = noun;
-            workingMemory[2] = verb;
-
-            bool programEnded = false;
-            int ptr = 0;
-            while (!programEnded)
-            {
-                int operation = workingMemory[ptr];
-                // Code 99 indicates end of Intcode program
-                if (operation == 99)
-                {
-                    programEnded = true;
-                    break;
-                }
-                int value1 = workingMemory[workingMemory[ptr + 1]];
-                int value2 = workingMemory[workingMemory[ptr + 2]];
-                if (operation == 1)
-                    workingMemory[workingMemory[ptr + 3]] = value1 + value2;
-                else if (operation == 2)
-                    workingMemory[workingMemory[ptr + 3]] = value1 * value2;
-                else
-                    throw new InvalidOperationException($"Operation # {operation} is not a valid Opcode.");
-                ptr += 4;
             }
             return workingMemory;
         }
