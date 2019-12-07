@@ -13,11 +13,13 @@ namespace AdventOfCode2019
         private readonly string fileName = "D5P1.txt";
         private InputGetter inputGetter;
         private string rawInput;
+        private IntcodeComputer computer;
 
         public Day5Problem1()
         {
             inputGetter = new InputGetter();
             rawInput = inputGetter.GetRawString(fileName);
+            computer = new IntcodeComputer(rawInput);
         }
 
         public string FileName() => fileName;
@@ -28,7 +30,8 @@ namespace AdventOfCode2019
 
         public int SolveProblem()
         {
-            throw new NotImplementedException();
+            computer.ComputeOpcodes(null, null, 1);
+            return 0;
         }
     }
 }
