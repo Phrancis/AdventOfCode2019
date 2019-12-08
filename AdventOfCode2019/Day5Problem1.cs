@@ -31,7 +31,7 @@ namespace AdventOfCode2019
         public int SolveProblem()
         {
             computer.ComputeOpcodes(null, null, 1);
-            return 0;
+            return computer.Output[computer.Output.Count - 1];
         }
     }
 }
