@@ -167,7 +167,7 @@ namespace AdventOfCode2019
                             throw new InvalidOperationException($"Opcode Get was called, but user input was null.");
                         //Console.WriteLine($"Get instruction updated location {locationToUpdate} to {WorkingMemory[locationToUpdate]}");
                         break;
-                    case Opcode.Put:
+                    case Opcode.Output:
                         instructionLength = 2;
                         int outputParam = WorkingMemory[ptr + 1];
                         int outputValue;
@@ -193,6 +193,56 @@ namespace AdventOfCode2019
                         //Console.WriteLine($"{opcode}: outputIndex: {outputParam} | outputValue: {outputValue}");
                         Output.Add(outputValue);
                         break;
+                    case Opcode.JumpIfTrue:
+                        instructionLength = 3;
+                        int jumpIfTrueParam1, jumpIfTrueParam2;
+                        if(modes.Count == 0)
+                        {
+                            jumpIfTrueParam1 = WorkingMemory[WorkingMemory[ptr + 1]];
+                            jumpIfTrueParam2 = WorkingMemory[WorkingMemory[ptr + 2]];
+                        }
+                        else
+                        {
+                            modes.Reverse();
+                            if (modes[0] == OpcodeParameterMode.Position)
+                                jumpIfTrueParam1 = WorkingMemory[WorkingMemory[ptr + 1]];
+                            else
+                                jumpIfTrueParam1 = WorkingMemory[ptr + 1];
+                            if (modes[1] == OpcodeParameterMode.Position)
+                                jumpIfTrueParam2 = WorkingMemory[WorkingMemory[ptr + 2]];
+                            else
+                                jumpIfTrueParam2 = WorkingMemory[ptr + 2];
+                        }
+                        if (jumpIfTrueParam1 != 0)
+                        {
+                            WorkingMemory[ptr] = jumpIfTrueParam2;
+                        }
+                        break;
+                    case Opcode.JumpIfFalse:
+                        instructionLength = 3;
+                        int jumpIfFalseParam1, jumpIfFalseParam2;
+                        if (modes.Count == 0)
+                        {
+                            jumpIfFalseParam1 = WorkingMemory[WorkingMemory[ptr + 1]];
+                            jumpIfFalseParam2 = WorkingMemory[WorkingMemory[ptr + 2]];
+                        }
+                        else
+                        {
+                            modes.Reverse();
+                            if (modes[0] == OpcodeParameterMode.Position)
+                                jumpIfFalseParam1 = WorkingMemory[WorkingMemory[ptr + 1]];
+                            else
+                                jumpIfFalseParam1 = WorkingMemory[ptr + 1];
+                            if (modes[1] == OpcodeParameterMode.Position)
+                                jumpIfFalseParam2 = WorkingMemory[WorkingMemory[ptr + 2]];
+                            else
+                                jumpIfFalseParam2 = WorkingMemory[ptr + 2];
+                        }
+                        if (jumpIfFalseParam1 == 0)
+                        {
+                            WorkingMemory[ptr] = jumpIfFalseParam2;
+                        }
+                        break;            
                     default:
                         throw new InvalidOperationException($"Operation # {(int)opcode} is not a valid Opcode.");
                 }

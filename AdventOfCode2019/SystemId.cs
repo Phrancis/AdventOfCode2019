@@ -10,5 +10,6 @@ namespace AdventOfCode2019
     {
         Unknown = 0,
         AirConditioner = 1,
+        ThermalRadiators = 5,
     }
 }

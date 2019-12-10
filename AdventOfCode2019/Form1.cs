@@ -49,6 +49,9 @@ namespace AdventOfCode2019
                 case "Day 5 Problem 1":
                     UpdateForm(new Day5Problem1());
                     break;
+                case "Day 5 Problem 2":
+                    UpdateForm(new Day5Problem2());
+                    break;
                 default:
                     MessageBox.Show("Invalid problem selection.");
                     break;
