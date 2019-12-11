@@ -48,8 +48,8 @@ namespace AdventOfCode2019
                 List<OpcodeParameterMode> modes = new List<OpcodeParameterMode>();
                 Opcode opcode;
 
-                //Console.WriteLine($"{Environment.NewLine}-- INSTRUCTION --");
-                //Console.WriteLine($"opcodeInput: {opcodeInput}");
+                Console.WriteLine($"{Environment.NewLine}-- INSTRUCTION --");
+                Console.WriteLine($"opcodeInput: {opcodeInput}");
 
                 // Handle <=2 digit input
                 if (opcodeInput <= 99)
@@ -69,8 +69,8 @@ namespace AdventOfCode2019
                 }
                 
                 List<int> instruction = new List<int>();
-                //Console.WriteLine($"Modes:");
-                //Console.WriteLine(modes.Count > 0 ? string.Join(",", modes) : "none");
+                Console.WriteLine($"Modes:");
+                Console.WriteLine(modes.Count > 0 ? string.Join(",", modes) : "none");
 
                 switch (opcode)
                 {
@@ -195,54 +195,72 @@ namespace AdventOfCode2019
                         break;
                     case Opcode.JumpIfTrue:
                         instructionLength = 3;
+                        instruction = WorkingMemory.GetRange(ptr, instructionLength);
+                        Console.WriteLine("Instruction:");
+                        Console.WriteLine(string.Join(",", instruction));
                         int jumpIfTrueParam1, jumpIfTrueParam2;
                         if(modes.Count == 0)
                         {
-                            jumpIfTrueParam1 = WorkingMemory[WorkingMemory[ptr + 1]];
-                            jumpIfTrueParam2 = WorkingMemory[WorkingMemory[ptr + 2]];
+                            jumpIfTrueParam1 = WorkingMemory[instruction[1]];
+                            jumpIfTrueParam2 = WorkingMemory[instruction[2]];
                         }
                         else
                         {
                             modes.Reverse();
                             if (modes[0] == OpcodeParameterMode.Position)
-                                jumpIfTrueParam1 = WorkingMemory[WorkingMemory[ptr + 1]];
+                                jumpIfTrueParam1 = WorkingMemory[instruction[1]];
                             else
-                                jumpIfTrueParam1 = WorkingMemory[ptr + 1];
+                                jumpIfTrueParam1 = instruction[1];
                             if (modes[1] == OpcodeParameterMode.Position)
-                                jumpIfTrueParam2 = WorkingMemory[WorkingMemory[ptr + 2]];
+                                jumpIfTrueParam2 = WorkingMemory[instruction[2]];
                             else
-                                jumpIfTrueParam2 = WorkingMemory[ptr + 2];
+                                jumpIfTrueParam2 = instruction[2];
                         }
                         if (jumpIfTrueParam1 != 0)
                         {
-                            WorkingMemory[ptr] = jumpIfTrueParam2;
+                            ptr = jumpIfTrueParam2;
+                            instructionLength = 0;
                         }
+                        Console.WriteLine($"{opcode}: Param1: {jumpIfTrueParam1} | Param2: {jumpIfTrueParam2} | Pointer: {ptr}");
                         break;
                     case Opcode.JumpIfFalse:
                         instructionLength = 3;
+                        instruction = WorkingMemory.GetRange(ptr, instructionLength);
+                        Console.WriteLine("Instruction:");
+                        Console.WriteLine(string.Join(",", instruction));
                         int jumpIfFalseParam1, jumpIfFalseParam2;
                         if (modes.Count == 0)
                         {
-                            jumpIfFalseParam1 = WorkingMemory[WorkingMemory[ptr + 1]];
-                            jumpIfFalseParam2 = WorkingMemory[WorkingMemory[ptr + 2]];
+                            jumpIfFalseParam1 = WorkingMemory[instruction[1]];
+                            jumpIfFalseParam2 = WorkingMemory[instruction[2]];
                         }
                         else
                         {
                             modes.Reverse();
                             if (modes[0] == OpcodeParameterMode.Position)
-                                jumpIfFalseParam1 = WorkingMemory[WorkingMemory[ptr + 1]];
+                                jumpIfFalseParam1 = WorkingMemory[instruction[1]];
                             else
-                                jumpIfFalseParam1 = WorkingMemory[ptr + 1];
+                                jumpIfFalseParam1 = instruction[1];
                             if (modes[1] == OpcodeParameterMode.Position)
-                                jumpIfFalseParam2 = WorkingMemory[WorkingMemory[ptr + 2]];
+                                jumpIfFalseParam2 = WorkingMemory[instruction[2]];
                             else
-                                jumpIfFalseParam2 = WorkingMemory[ptr + 2];
+                                jumpIfFalseParam2 = instruction[2];
                         }
                         if (jumpIfFalseParam1 == 0)
                         {
-                            WorkingMemory[ptr] = jumpIfFalseParam2;
+                            ptr = jumpIfFalseParam2;
+                            instructionLength = 0;
                         }
-                        break;            
+                        Console.WriteLine($"{opcode}: Param1: {jumpIfFalseParam1} | Param2: {jumpIfFalseParam2} | Pointer: {ptr}");
+                        break;
+                    case Opcode.LessThan:
+                        instructionLength = 3;
+                        throw new NotImplementedException();
+                        break;
+                    case Opcode.Equals:
+                        instructionLength = 3;
+                        throw new NotImplementedException();
+                        break;
                     default:
                         throw new InvalidOperationException($"Operation # {(int)opcode} is not a valid Opcode.");
                 }
