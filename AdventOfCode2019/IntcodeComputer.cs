@@ -254,12 +254,52 @@ namespace AdventOfCode2019
                         Console.WriteLine($"{opcode}: Param1: {jumpIfFalseParam1} | Param2: {jumpIfFalseParam2} | Pointer: {ptr}");
                         break;
                     case Opcode.LessThan:
-                        instructionLength = 3;
-                        throw new NotImplementedException();
+                        instructionLength = 4;
+                        instruction = WorkingMemory.GetRange(ptr, instructionLength);
+                        Console.WriteLine("Instruction:");
+                        Console.WriteLine(string.Join(",", instruction));
+                        int lessThanParam1, lessThanParam2;
+                        if (modes.Count == 0)
+                        {
+                            lessThanParam1 = WorkingMemory[instruction[1]];
+                            lessThanParam2 = WorkingMemory[instruction[2]];
+                        }
+                        else
+                        {
+                            modes.Reverse();
+                            lessThanParam1 = modes[0] == OpcodeParameterMode.Position
+                                ? WorkingMemory[instruction[1]]
+                                : instruction[1];
+                            lessThanParam2 = modes[1] == OpcodeParameterMode.Position
+                                ? WorkingMemory[instruction[2]]
+                                : instruction[2];
+                        }
+                        WorkingMemory[instruction[3]] = lessThanParam1 < lessThanParam2 ? 1 : 0;
+                        Console.WriteLine($"{opcode}: Param1: {lessThanParam1} | Param2: {lessThanParam2} | Location updated: {instruction[3]}");
                         break;
                     case Opcode.Equals:
-                        instructionLength = 3;
-                        throw new NotImplementedException();
+                        instructionLength = 4;
+                        instruction = WorkingMemory.GetRange(ptr, instructionLength);
+                        Console.WriteLine("Instruction:");
+                        Console.WriteLine(string.Join(",", instruction));
+                        int equalsParam1, equalsParam2;
+                        if (modes.Count == 0)
+                        {
+                            equalsParam1 = WorkingMemory[instruction[1]];
+                            equalsParam2 = WorkingMemory[instruction[2]];
+                        }
+                        else
+                        {
+                            modes.Reverse();
+                            equalsParam1 = modes[0] == OpcodeParameterMode.Position
+                                ? WorkingMemory[instruction[1]]
+                                : instruction[1];
+                            equalsParam2 = modes[1] == OpcodeParameterMode.Position
+                                ? WorkingMemory[instruction[2]]
+                                : instruction[2];
+                        }
+                        WorkingMemory[instruction[3]] = equalsParam1 == equalsParam2 ? 1 : 0;
+                        Console.WriteLine($"{opcode}: Param1: {equalsParam1} | Param2: {equalsParam2} | Location updated: {instruction[3]}");
                         break;
                     default:
                         throw new InvalidOperationException($"Operation # {(int)opcode} is not a valid Opcode.");
