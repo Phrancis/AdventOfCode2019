@@ -56,7 +56,8 @@
             "Day 4 Problem 2",
             "Day 5 Problem 1",
             "Day 5 Problem 2",
-            "Day 6 Problem 1"});
+            "Day 6 Problem 1",
+            "Day 6 Problem 2"});
             this.ProblemSelector.Location = new System.Drawing.Point(94, 13);
             this.ProblemSelector.Name = "ProblemSelector";
             this.ProblemSelector.Size = new System.Drawing.Size(479, 28);

@@ -33,18 +33,22 @@ namespace AdventOfCode2019
 
         public OrbitMap GetOrbitMap() => _orbitMap;
 
-        /// <summary>
-        /// Solve the problem.
-        /// </summary>
-        /// <returns>The solution to the problem</returns>
-        public int SolveProblem()
+        public void PopulateMap()
         {
             string[] orbits = _rawInput.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             foreach (string s in orbits)
             {
                 _orbitMap.ProcessMapEntry(s);
             }
-            Console.WriteLine(_orbitMap);
+        }
+
+        /// <summary>
+        /// Solve the problem.
+        /// </summary>
+        /// <returns>The solution to the problem</returns>
+        public int SolveProblem()
+        {
+            PopulateMap();
             return _orbitMap.CheckSum();
         }
 
@@ -121,6 +125,7 @@ namespace AdventOfCode2019
                 {
                     orbitingObj = new OrbitObject(orbitingName, orbitedObj);
                     AddObject(orbitingObj);
+                    orbitedObj.AddChild(orbitingObj);
                 }
             }
 
@@ -138,6 +143,39 @@ namespace AdventOfCode2019
                 return checksum;
             }
 
+            /// <summary>
+            /// Calculates the distance in orbits between two objects, 
+            /// i.e. the number of "jumps" for A to get in the same orbit as B, and vice versa.
+            /// </summary>
+            /// <param name="obj1">The 1st object</param>
+            /// <param name="obj2">The 2nd object</param>
+            /// <returns></returns>
+            public int OrbitalJumpsBetween(OrbitObject obj1, OrbitObject obj2)
+            {
+                List<OrbitObject> obj1ToHead = obj1.ObjectsToHead();
+                List<OrbitObject> obj2ToHead = obj2.ObjectsToHead();
+                OrbitObject nearestObject = null;
+                foreach (OrbitObject _obj1 in obj1ToHead)
+                {
+                    foreach (OrbitObject _obj2 in obj2ToHead)
+                    {
+                        if (_obj1 == _obj2)
+                        {
+                            nearestObject = _obj1;
+                            break;
+                        }                            
+                    }
+                    if (nearestObject != null)
+                        break;
+                }
+                // This exception should never happen, because the head should be shared by all orbiting objects.
+                if (nearestObject == null)
+                    throw new InvalidOperationException($"Objects {obj1} and {obj2} do not orbit a shared object.");
+                int obj1Distance = obj1ToHead.IndexOf(nearestObject) + 1;
+                int obj2Distance = obj2ToHead.IndexOf(nearestObject)  + 1;
+                return obj1Distance + obj2Distance;
+            }
+
             public override string ToString()
             {
                 string headStr = $"HEAD: {FindHead()} | ";
@@ -146,7 +184,7 @@ namespace AdventOfCode2019
             }
         }
 
-        public class OrbitObject
+        public class OrbitObject : IEquatable<OrbitObject>
         {
             public string Name { get; private set; }
             public OrbitObject Parent { get; private set; }
@@ -194,6 +232,22 @@ namespace AdventOfCode2019
                 return distance;
             }
 
+            /// <summary>
+            /// Get list of objects this object is orbiting up to the head.
+            /// </summary>
+            /// <returns>The list of orbited objects</returns>
+            public List<OrbitObject> ObjectsToHead()
+            {
+                List <OrbitObject> objectsToHead = new List<OrbitObject>();
+                OrbitObject nextParent = Parent;
+                while (nextParent != null)
+                {
+                    objectsToHead.Add(nextParent);
+                    nextParent = nextParent.Parent;
+                }
+                return objectsToHead;
+            }
+
             public override string ToString()
             {
                 string parentName;
@@ -205,7 +259,25 @@ namespace AdventOfCode2019
                 {
                     parentName = "none";
                 }
-                return $"OrbitObject[Name={Name}, Parent={parentName}, Children={Children.Count}";
+                return $"OrbitObject[Name={Name}, Parent={parentName}, Children={Children.Count}]";
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is OrbitObject && Equals(obj);
+            }
+
+            public override int GetHashCode()
+            {
+                var hashCode = -512206829;
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+                hashCode = hashCode * -1521134295 + EqualityComparer<OrbitObject>.Default.GetHashCode(Parent);
+                return hashCode;
+            }
+
+            public bool Equals(OrbitObject other)
+            {
+                return Name == other.Name;
             }
         }
     }
