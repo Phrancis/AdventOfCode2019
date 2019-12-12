@@ -60,7 +60,7 @@ namespace AdventOfCode2019
 
         public int SolvePart2()
         {
-            return -1;
+            return new Day3Problem2().SolvePart1();
         }
 
         private List<Point> CalculatePoints(List<string> instructions)

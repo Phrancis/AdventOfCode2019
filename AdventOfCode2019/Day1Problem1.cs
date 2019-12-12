@@ -42,7 +42,7 @@ namespace AdventOfCode2019
 
         public int SolvePart2()
         {
-            return -1;
+            return new Day1Problem2().SolvePart1();
         }
 
         public int CalculateFuel(int mass)

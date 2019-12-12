@@ -32,7 +32,7 @@ namespace AdventOfCode2019
 
         public int SolvePart2()
         {
-            return -1;
+            return new Day2Problem2().SolvePart1();
         }
     }
 }

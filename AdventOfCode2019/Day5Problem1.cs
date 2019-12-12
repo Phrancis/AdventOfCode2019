@@ -36,7 +36,7 @@ namespace AdventOfCode2019
 
         public int SolvePart2()
         {
-            return -1;
+            return new Day5Problem2().SolvePart1();
         }
     }
 }

@@ -54,7 +54,7 @@ namespace AdventOfCode2019
 
         public int SolvePart2()
         {
-            return -1;
+            return new Day6Problem2().SolvePart1();
         }
 
         public class OrbitMap

@@ -42,7 +42,7 @@ namespace AdventOfCode2019
 
         public int SolvePart2()
         {
-            return -1;
+            return new Day4Problem2().SolvePart1();
         }
 
         public int[] ConvertIntToDigits(int number) => number.ToString().Select(d => int.Parse(d.ToString())).ToArray();

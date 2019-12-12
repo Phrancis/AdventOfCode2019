@@ -36,7 +36,7 @@ namespace AdventOfCode2019
                     newlyQualifiedPasswords.Add(password);
                 }
             }
-            Console.WriteLine(string.Join(Environment.NewLine, newlyQualifiedPasswords));
+            //Console.WriteLine(string.Join(Environment.NewLine, newlyQualifiedPasswords));
             return newlyQualifiedPasswords.Count;
         }
 
