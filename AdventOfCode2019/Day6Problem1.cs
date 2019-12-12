@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdventOfCode2019
 {
@@ -15,6 +12,10 @@ namespace AdventOfCode2019
         private string _rawInput;
         private OrbitMap _orbitMap;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="fileName">The name of the text file to use for input</param>
         public Day6Problem1(string fileName = null)
         {
             if (fileName != null)
@@ -32,6 +33,10 @@ namespace AdventOfCode2019
 
         public OrbitMap GetOrbitMap() => _orbitMap;
 
+        /// <summary>
+        /// Solve the problem.
+        /// </summary>
+        /// <returns>The solution to the problem</returns>
         public int SolveProblem()
         {
             string[] orbits = _rawInput.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
@@ -47,11 +52,18 @@ namespace AdventOfCode2019
         {
             public List<OrbitObject> OrbitingObjects { get; private set; }
 
+            /// <summary>
+            /// Constructor.
+            /// </summary>
             public OrbitMap()
             {
                 OrbitingObjects = new List<OrbitObject>();
             }
 
+            /// <summary>
+            /// Add an object to the objects in this map.
+            /// </summary>
+            /// <param name="obj">The OrbitObject to add</param>
             public void AddObject(OrbitObject obj) => OrbitingObjects.Add(obj);
 
             public OrbitObject FindOrbitingObject(string name)
@@ -64,6 +76,10 @@ namespace AdventOfCode2019
                 return null;
             }
 
+            /// <summary>
+            /// Find the head (top parent) object of this map.
+            /// </summary>
+            /// <returns>The head object</returns>
             public OrbitObject FindHead()
             {
                 foreach (OrbitObject obj in OrbitingObjects)
@@ -108,6 +124,10 @@ namespace AdventOfCode2019
                 }
             }
 
+            /// <summary>
+            /// Calculates the sum of the orbital distance from the head for each object in the map.
+            /// </summary>
+            /// <returns>The sum of all the distances</returns>
             public int CheckSum()
             {
                 int checksum = 0;
@@ -132,6 +152,11 @@ namespace AdventOfCode2019
             public OrbitObject Parent { get; private set; }
             public List<OrbitObject> Children { get; private set; }
 
+            /// <summary>
+            /// Constructor.
+            /// </summary>
+            /// <param name="name">The name of this object</param>
+            /// <param name="parent">The parent object, or null if not known</param>
             public OrbitObject(string name, OrbitObject parent = null)
             {
                 Name = name;
@@ -139,10 +164,22 @@ namespace AdventOfCode2019
                 Children = new List<OrbitObject>();
             }
 
+            /// <summary>
+            /// Set this object's parent object (the object it's orbiting).
+            /// </summary>
+            /// <param name="parent">The parent object</param>
             public void SetParent(OrbitObject parent) => Parent = parent;
 
+            /// <summary>
+            /// Add an object as a child.
+            /// </summary>
+            /// <param name="child">The object to add</param>
             public void AddChild(OrbitObject child) => Children.Add(child);
 
+            /// <summary>
+            /// Calculate the distance (in number of orbiting objects) between this object and the head.
+            /// </summary>
+            /// <returns>The distance</returns>
             public int OrbitDistanceToHead()
             {
                 if (Parent == null)
@@ -159,13 +196,12 @@ namespace AdventOfCode2019
 
             public override string ToString()
             {
-                //string parentName = Parent.Name != null ? Parent.Name : "none";
                 string parentName;
                 try
                 {
                     parentName = Parent.Name;
                 }
-                catch (NullReferenceException e)
+                catch (NullReferenceException)
                 {
                     parentName = "none";
                 }
