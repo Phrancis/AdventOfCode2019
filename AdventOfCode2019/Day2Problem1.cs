@@ -23,11 +23,16 @@ namespace AdventOfCode2019
 
         public string ProblemUrl() => problemUrl;
 
-        public int SolveProblem()
+        public int SolvePart1()
         {
             IntcodeComputer computer = new IntcodeComputer(rawInput);
             List<int> result = computer.ComputeOpcodes(12, 2);
             return result[0];
+        }
+
+        public int SolvePart2()
+        {
+            return -1;
         }
     }
 }

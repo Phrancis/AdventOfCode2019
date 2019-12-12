@@ -15,7 +15,7 @@ namespace AdventOfCode2019
         public Day4Problem2()
         {
             d4p1 = new Day4Problem1();
-            d4p1.SolveProblem();
+            d4p1.SolvePart1();
             initialQualifiedPassword = d4p1.QualifiedPasswords;
         }
 
@@ -25,7 +25,7 @@ namespace AdventOfCode2019
 
         public string ProblemUrl() => problemUrl;
 
-        public int SolveProblem()
+        public int SolvePart1()
         {
             List<int> newlyQualifiedPasswords = new List<int>();
             foreach (int password in initialQualifiedPassword)
@@ -38,6 +38,11 @@ namespace AdventOfCode2019
             }
             Console.WriteLine(string.Join(Environment.NewLine, newlyQualifiedPasswords));
             return newlyQualifiedPasswords.Count;
+        }
+
+        public int SolvePart2()
+        {
+            return -1;
         }
 
         private bool Has2AdjacentDigitsNotPartOfAGroup(int[] digits)

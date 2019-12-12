@@ -20,7 +20,7 @@ namespace AdventOfCode2019
         public Day3Problem2()
         {
             d3p1 = new Day3Problem1();
-            d3p1.SolveProblem();
+            d3p1.SolvePart1();
             wire1Points = d3p1.wire1Points;
             wire2Points = d3p1.wire2Points;
             crossings = d3p1.crossings;
@@ -32,7 +32,7 @@ namespace AdventOfCode2019
 
         public string ProblemUrl() => problemUrl;
 
-        public int SolveProblem()
+        public int SolvePart1()
         {
             List<int> stepsForEachCrossing = new List<int>();
             foreach(Point c in crossings)
@@ -66,6 +66,11 @@ namespace AdventOfCode2019
                 }
             }
             return fewestSteps;
+        }
+
+        public int SolvePart2()
+        {
+            return -1;
         }
     }
 }

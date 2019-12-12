@@ -24,7 +24,7 @@ namespace AdventOfCode2019
 
         public string FileName() => fileName;
 
-        public int SolveProblem()
+        public int SolvePart1()
         {
             List<string> inputs = rawInput.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList();
             List<int> fuelCalculations = new List<int>();
@@ -38,6 +38,11 @@ namespace AdventOfCode2019
                 sum += unit;
             }
             return sum;
+        }
+
+        public int SolvePart2()
+        {
+            return -1;
         }
 
         public int CalculateFuel(int mass)

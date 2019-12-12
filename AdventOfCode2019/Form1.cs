@@ -15,7 +15,7 @@ namespace AdventOfCode2019
             TitleTextBox.Text = problem.ProblemTitle();
             URLTextBox.Text = problem.ProblemUrl();
             InputFileTextBox.Text = problem.FileName();
-            ResultTextBox.Text = problem.SolveProblem().ToString();
+            ResultTextBox.Text = problem.SolvePart1().ToString();
         }
 
         private void SolveButton_Click(object sender, EventArgs e)

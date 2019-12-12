@@ -23,7 +23,7 @@ namespace AdventOfCode2019
 
         public string ProblemUrl() => problemUrl;
 
-        public int SolveProblem()
+        public int SolvePart1()
         {
             int targetOutput = 19690720;
             List<int> results;
@@ -40,6 +40,11 @@ namespace AdventOfCode2019
                 }
             }
             throw new Exception("Solution could not be found.");
+        }
+
+        public int SolvePart2()
+        {
+            return -1;
         }
     }
 }

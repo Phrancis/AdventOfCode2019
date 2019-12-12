@@ -28,10 +28,15 @@ namespace AdventOfCode2019
 
         public string ProblemUrl() => problemUrl;
 
-        public int SolveProblem()
+        public int SolvePart1()
         {
             computer.ComputeOpcodes(null, null, (int)SystemId.AirConditioner);
             return computer.Output[computer.Output.Count - 1];
+        }
+
+        public int SolvePart2()
+        {
+            return -1;
         }
     }
 }

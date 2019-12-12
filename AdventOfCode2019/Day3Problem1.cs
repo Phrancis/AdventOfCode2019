@@ -31,7 +31,7 @@ namespace AdventOfCode2019
 
         public string RawInput() => rawInput;
 
-        public int SolveProblem()
+        public int SolvePart1()
         {
             string[] input = rawInput.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             List<string> wire1Data = new List<string>(input[0].Split(','));
@@ -56,6 +56,11 @@ namespace AdventOfCode2019
                     shortestDistance = d;
             }
             return shortestDistance;
+        }
+
+        public int SolvePart2()
+        {
+            return -1;
         }
 
         private List<Point> CalculatePoints(List<string> instructions)

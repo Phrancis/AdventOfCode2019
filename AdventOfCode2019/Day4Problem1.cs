@@ -24,7 +24,7 @@ namespace AdventOfCode2019
 
         public string ProblemUrl() => problemUrl;
 
-        public int SolveProblem()
+        public int SolvePart1()
         {
             string[] range = rawInput.Split('-');
             int rangeMin = int.Parse(range[0]);
@@ -38,6 +38,11 @@ namespace AdventOfCode2019
                     QualifiedPasswords.Add(password);
             }
             return QualifiedPasswords.Count;
+        }
+
+        public int SolvePart2()
+        {
+            return -1;
         }
 
         public int[] ConvertIntToDigits(int number) => number.ToString().Select(d => int.Parse(d.ToString())).ToArray();

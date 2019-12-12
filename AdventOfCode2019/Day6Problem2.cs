@@ -25,13 +25,18 @@ namespace AdventOfCode2019
 
         public string ProblemUrl() => _problemUrl;
 
-        public int SolveProblem()
+        public int SolvePart1()
         {
             d6p1.PopulateMap();
             var map = d6p1.GetOrbitMap();
             return map.OrbitalJumpsBetween(
                 map.FindOrbitingObject("YOU").Parent,
                 map.FindOrbitingObject("SAN").Parent);
+        }
+
+        public int SolvePart2()
+        {
+            return -1;
         }
     }
 }
