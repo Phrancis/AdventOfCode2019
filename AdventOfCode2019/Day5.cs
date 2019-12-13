@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode2019
 {
-    class Day5Problem2 : IAdventOfCodeProblem
+    class Day5 : IAdventOfCodeProblem
     {
-        private readonly string problemUrl = "https://adventofcode.com/2019/day/5#part2";
-        private readonly string problemTitle = "Day 5: Sunny with a Chance of Asteroids - Part 2";
+        private readonly string problemUrl = "https://adventofcode.com/2019/day/5";
+        private readonly string problemTitle = "Day 5: Sunny with a Chance of Asteroids";
         private readonly string fileName = "D5P1.txt";
         private InputGetter inputGetter;
         private string rawInput;
         private IntcodeComputer computer;
 
-        public Day5Problem2()
+        public Day5()
         {
             inputGetter = new InputGetter();
             rawInput = inputGetter.GetRawString(fileName);
@@ -30,14 +30,14 @@ namespace AdventOfCode2019
 
         public int SolvePart1()
         {
-            computer.ComputeOpcodes(null, null, (int)SystemId.ThermalRadiators);
-            Console.WriteLine(string.Join(",", computer.Output));
+            computer.ComputeOpcodes(null, null, (int)SystemId.AirConditioner);
             return computer.Output[computer.Output.Count - 1];
         }
 
         public int SolvePart2()
         {
-            return -1;
+            computer.ComputeOpcodes(null, null, (int)SystemId.ThermalRadiators);
+            return computer.Output[computer.Output.Count - 1];
         }
     }
 }

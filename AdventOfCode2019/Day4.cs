@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace AdventOfCode2019
 {
-    class Day4Problem1 : IAdventOfCodeProblem
+    class Day4 : IAdventOfCodeProblem
     {
         private readonly string problemUrl = "https://adventofcode.com/2019/day/4";
         private readonly string problemTitle = "Day 4: Secure Container";
@@ -12,7 +12,7 @@ namespace AdventOfCode2019
         private string rawInput;
         public List<int> QualifiedPasswords { get; private set; }
 
-        public Day4Problem1()
+        public Day4()
         {
             inputGetter = new InputGetter();
             rawInput = inputGetter.GetRawString(fileName);
@@ -42,7 +42,17 @@ namespace AdventOfCode2019
 
         public int SolvePart2()
         {
-            return new Day4Problem2().SolvePart1();
+            List<int> newlyQualifiedPasswords = new List<int>();
+            foreach (int password in QualifiedPasswords)
+            {
+                int[] digits = ConvertIntToDigits(password);
+                if (Has2AdjacentDigitsNotPartOfAGroup(digits))
+                {
+                    newlyQualifiedPasswords.Add(password);
+                }
+            }
+            //Console.WriteLine(string.Join(Environment.NewLine, newlyQualifiedPasswords));
+            return newlyQualifiedPasswords.Count;
         }
 
         public int[] ConvertIntToDigits(int number) => number.ToString().Select(d => int.Parse(d.ToString())).ToArray();
@@ -57,7 +67,7 @@ namespace AdventOfCode2019
             return true;
         }
 
-        private bool HasSameAdjacentDigits(int[] digits)
+        public bool HasSameAdjacentDigits(int[] digits)
         {
             for (int i = 0; i < digits.Length - 1; i++)
             {
@@ -65,6 +75,11 @@ namespace AdventOfCode2019
                     return true;
             }
             return false;
+        }
+
+        public bool Has2AdjacentDigitsNotPartOfAGroup(int[] digits)
+        {
+            return digits.GroupBy(d => d).Any(g => g.Count() == 2);
         }
     }
 }

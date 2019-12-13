@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AdventOfCode2019
 {
-    class Day6Problem1 : IAdventOfCodeProblem
+    class Day6 : IAdventOfCodeProblem
     {
         private readonly string _problemUrl = "https://adventofcode.com/2019/day/6";
         private readonly string _problemTitle = "Day 6: Universal Orbit Map";
@@ -16,7 +16,7 @@ namespace AdventOfCode2019
         /// Constructor.
         /// </summary>
         /// <param name="fileName">The name of the text file to use for input</param>
-        public Day6Problem1(string fileName = null)
+        public Day6(string fileName = null)
         {
             if (fileName != null)
                 _fileName = fileName;
@@ -54,7 +54,11 @@ namespace AdventOfCode2019
 
         public int SolvePart2()
         {
-            return new Day6Problem2().SolvePart1();
+            PopulateMap();
+            var map = GetOrbitMap();
+            return map.OrbitalJumpsBetween(
+                map.FindOrbitingObject("YOU").Parent,
+                map.FindOrbitingObject("SAN").Parent);
         }
 
         public class OrbitMap

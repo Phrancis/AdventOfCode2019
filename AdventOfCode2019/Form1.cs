@@ -33,13 +33,13 @@ namespace AdventOfCode2019
                     UpdateForm(new Day3());
                     break;
                 case "Day 4":
-                    UpdateForm(new Day4Problem1());
+                    UpdateForm(new Day4());
                     break;
                 case "Day 5":
-                    UpdateForm(new Day5Problem1());
+                    UpdateForm(new Day5());
                     break;
                 case "Day 6":
-                    UpdateForm(new Day6Problem1());
+                    UpdateForm(new Day6());
                     break;
                 default:
                     MessageBox.Show("Invalid problem selection.");
