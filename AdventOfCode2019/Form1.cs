@@ -23,41 +23,23 @@ namespace AdventOfCode2019
         {
             switch (ProblemSelector.GetItemText(ProblemSelector.SelectedItem))
             {
-                case "Day 1 Problem 1":
+                case "Day 1":
                     UpdateForm(new Day1Problem1());
                     break;
-                case "Day 1 Problem 2":
-                    UpdateForm(new Day1Problem2());
-                    break;
-                case "Day 2 Problem 1":
+                case "Day 2":
                     UpdateForm(new Day2Problem1());
                     break;
-                case "Day 2 Problem 2":
-                    UpdateForm(new Day2Problem2());
-                    break;
-                case "Day 3 Problem 1":
+                case "Day 3":
                     UpdateForm(new Day3Problem1());
                     break;
-                case "Day 3 Problem 2":
-                    UpdateForm(new Day3Problem2());
-                    break;
-                case "Day 4 Problem 1":
+                case "Day 4":
                     UpdateForm(new Day4Problem1());
                     break;
-                case "Day 4 Problem 2":
-                    UpdateForm(new Day4Problem2());
-                    break;
-                case "Day 5 Problem 1":
+                case "Day 5":
                     UpdateForm(new Day5Problem1());
                     break;
-                case "Day 5 Problem 2":
-                    UpdateForm(new Day5Problem2());
-                    break;
-                case "Day 6 Problem 1":
+                case "Day 6":
                     UpdateForm(new Day6Problem1());
-                    break;
-                case "Day 6 Problem 2":
-                    UpdateForm(new Day6Problem2());
                     break;
                 default:
                     MessageBox.Show("Invalid problem selection.");
