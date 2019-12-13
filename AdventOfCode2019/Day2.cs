@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace AdventOfCode2019
 {
-    class Day2Problem2 : IAdventOfCodeProblem
+    class Day2 : IAdventOfCodeProblem
     {
-        private readonly string problemUrl = "https://adventofcode.com/2019/day/2#part2";
-        private readonly string problemTitle = "Day 2: 1202 Program Alarm - Part 2";
+        private readonly string problemUrl = "https://adventofcode.com/2019/day/2";
+        private readonly string problemTitle = "Day 2: 1202 Program Alarm";
         private readonly string fileName = "D2P1.txt";
         private InputGetter inputGetter;
         private string rawInput;
 
-        public Day2Problem2()
+        public Day2()
         {
             inputGetter = new InputGetter();
             rawInput = inputGetter.GetRawString(fileName);
@@ -24,6 +24,13 @@ namespace AdventOfCode2019
         public string ProblemUrl() => problemUrl;
 
         public int SolvePart1()
+        {
+            IntcodeComputer computer = new IntcodeComputer(rawInput);
+            List<int> result = computer.ComputeOpcodes(12, 2);
+            return result[0];
+        }
+
+        public int SolvePart2()
         {
             int targetOutput = 19690720;
             List<int> results;
@@ -40,11 +47,6 @@ namespace AdventOfCode2019
                 }
             }
             throw new Exception("Solution could not be found.");
-        }
-
-        public int SolvePart2()
-        {
-            return -1;
         }
     }
 }

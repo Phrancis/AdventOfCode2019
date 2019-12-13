@@ -24,13 +24,13 @@ namespace AdventOfCode2019
             switch (ProblemSelector.GetItemText(ProblemSelector.SelectedItem))
             {
                 case "Day 1":
-                    UpdateForm(new Day1Problem1());
+                    UpdateForm(new Day1());
                     break;
                 case "Day 2":
-                    UpdateForm(new Day2Problem1());
+                    UpdateForm(new Day2());
                     break;
                 case "Day 3":
-                    UpdateForm(new Day3Problem1());
+                    UpdateForm(new Day3());
                     break;
                 case "Day 4":
                     UpdateForm(new Day4Problem1());

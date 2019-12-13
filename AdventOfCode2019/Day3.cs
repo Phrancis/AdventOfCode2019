@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace AdventOfCode2019
 {
-    internal class Day3Problem1 : IAdventOfCodeProblem
+    internal class Day3 : IAdventOfCodeProblem
     {
         private readonly string problemUrl = "https://adventofcode.com/2019/day/3";
         private readonly string problemTitle = "Day 3: Crossed Wires";
@@ -15,9 +15,9 @@ namespace AdventOfCode2019
 
         public List<Point> wire1Points { get; private set; }
         public List<Point> wire2Points { get; private set; }
-        public IEnumerable<Point>  crossings { get; private set; }
+        public IEnumerable<Point> crossings { get; private set; }
 
-        public Day3Problem1()
+        public Day3()
         {
             inputGetter = new InputGetter();
             rawInput = inputGetter.GetRawString(fileName);
@@ -60,7 +60,38 @@ namespace AdventOfCode2019
 
         public int SolvePart2()
         {
-            return new Day3Problem2().SolvePart1();
+            List<int> stepsForEachCrossing = new List<int>();
+            foreach (Point c in crossings)
+            {
+                int wire1Steps = 0;
+                int wire2Steps = 0;
+                foreach (Point p in wire1Points)
+                {
+                    wire1Steps++;
+                    if (p == c)
+                    {
+                        break;
+                    }
+                }
+                foreach (Point p in wire2Points)
+                {
+                    wire2Steps++;
+                    if (p == c)
+                    {
+                        break;
+                    }
+                }
+                stepsForEachCrossing.Add(wire1Steps + wire2Steps);
+            }
+            int fewestSteps = int.MaxValue;
+            foreach (int s in stepsForEachCrossing)
+            {
+                if (s != 0 && s < fewestSteps)
+                {
+                    fewestSteps = s;
+                }
+            }
+            return fewestSteps;
         }
 
         private List<Point> CalculatePoints(List<string> instructions)

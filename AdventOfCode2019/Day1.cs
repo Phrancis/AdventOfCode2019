@@ -4,18 +4,22 @@ using System.Linq;
 
 namespace AdventOfCode2019
 {
-    class Day1Problem1 :IAdventOfCodeProblem
+    class Day1 :IAdventOfCodeProblem
     {
         private readonly string problemUrl = "https://adventofcode.com/2019/day/1";
         private readonly string problemTitle = "Day 1: The Tyranny of the Rocket Equation";
         private readonly string fileName = "D1P1.txt";
         private InputGetter inputGetter;
         private string rawInput;
+        private List<int> fuelForModules;
+        private List<int> fuelForFuel;
 
-        public Day1Problem1()
+        public Day1()
         {
             inputGetter = new InputGetter();
-            rawInput = inputGetter.GetRawString(fileName);           
+            rawInput = inputGetter.GetRawString(fileName);
+            fuelForModules = new List<int>();
+            fuelForFuel = new List<int>();
         }
 
         public string ProblemUrl() => problemUrl;
@@ -42,12 +46,38 @@ namespace AdventOfCode2019
 
         public int SolvePart2()
         {
-            return new Day1Problem2().SolvePart1();
+            int totalFuelMass = 0;
+            List<string> modulesMass = rawInput.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList();
+            foreach (string mass in modulesMass)
+            {
+                int fuel = CalculateFuel(Int32.Parse(mass));
+                fuelForModules.Add(fuel);
+                totalFuelMass += fuel;
+            }
+            foreach (int mass in fuelForModules)
+            {
+                int fuel = CalculateFuelForFuel(mass);
+                fuelForFuel.Add(fuel);
+                totalFuelMass += fuel;
+            }
+            return totalFuelMass;
         }
 
         public int CalculateFuel(int mass)
         {
             return (int)Math.Floor((double)mass / 3) - 2;
+        }
+
+        public int CalculateFuelForFuel(int fuelMass)
+        {
+            int cumulativeFuel = 0;
+            int fuelToAdd = CalculateFuel(fuelMass);
+            while (fuelToAdd > 0)
+            {
+                cumulativeFuel += fuelToAdd;
+                fuelToAdd = CalculateFuel(fuelToAdd);
+            }
+            return cumulativeFuel;
         }
     }
 }
