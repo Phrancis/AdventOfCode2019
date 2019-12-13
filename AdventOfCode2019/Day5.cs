@@ -30,13 +30,15 @@ namespace AdventOfCode2019
 
         public int SolvePart1()
         {
-            computer.ComputeOpcodes(null, null, (int)SystemId.AirConditioner);
+            int[] programInputs = new int[] { (int)SystemId.AirConditioner };
+            computer.ComputeOpcodes(null, null, programInputs);
             return computer.Output[computer.Output.Count - 1];
         }
 
         public int SolvePart2()
         {
-            computer.ComputeOpcodes(null, null, (int)SystemId.ThermalRadiators);
+            int[] programInputs = new int[] { (int)SystemId.AirConditioner };
+            computer.ComputeOpcodes(null, null, programInputs);
             return computer.Output[computer.Output.Count - 1];
         }
     }

@@ -29,7 +29,7 @@ namespace AdventOfCode2019
 
         public void ResetToInitialMemory() => WorkingMemory = new List<int>(InitialMemory);
 
-        public List<int> ComputeOpcodes(int? noun = null, int? verb = null, int? userInput = null)
+        public List<int> ComputeOpcodes(int? noun = null, int? verb = null, int[] programInputs = null)
         {
             ResetToInitialMemory();
             Output = new List<int>();
@@ -158,11 +158,15 @@ namespace AdventOfCode2019
                         WorkingMemory[multLocationToUpdate] = mult1 * mult2;
                         //Console.WriteLine($"{opcode}: Memory location {multLocationToUpdate} updated to {WorkingMemory[multLocationToUpdate]}");
                         break;
-                    case Opcode.Get:
+                    case Opcode.Input:
                         instructionLength = 2;
                         int locationToUpdate = WorkingMemory[ptr + 1];
-                        if (userInput != null)
-                            WorkingMemory[locationToUpdate] = (int)userInput;
+                        if (programInputs != null)
+                        {
+                            WorkingMemory[locationToUpdate] = programInputs[0];
+                            // Remove the input after use
+                            programInputs = programInputs.Skip(1).Take(programInputs.Length - 1).ToArray();
+                        }                            
                         else
                             throw new InvalidOperationException($"Opcode Get was called, but user input was null.");
                         //Console.WriteLine($"Get instruction updated location {locationToUpdate} to {WorkingMemory[locationToUpdate]}");

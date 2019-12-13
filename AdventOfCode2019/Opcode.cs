@@ -4,7 +4,7 @@
     {
         Add = 1,
         Multiply = 2,
-        Get = 3,
+        Input = 3,
         Output = 4,
         JumpIfTrue = 5,
         JumpIfFalse = 6,
