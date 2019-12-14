@@ -9,6 +9,8 @@ namespace AdventOfCode2019
         public List<int> InitialMemory { get; private set; }
         public List<int> WorkingMemory { get; private set; }
         public List<int> Output { get; private set; }
+        public int LastPointer = 0;
+        public event EventHandler OnProgramHalted;
 
         public IntcodeComputer(List<int> memoryList)
         {
@@ -25,22 +27,32 @@ namespace AdventOfCode2019
                 InitialMemory.Add(Int32.Parse(item));
             }
             WorkingMemory = new List<int>(InitialMemory);
+            Output = new List<int>();
         }
 
         public void ResetToInitialMemory() => WorkingMemory = new List<int>(InitialMemory);
 
-        public List<int> ComputeOpcodes(int? noun = null, int? verb = null, int[] programInputs = null)
+        public List<int> ComputeOpcodes(int? noun = null, int? verb = null, int[] programInputs = null, bool resetComputer = true)
         {
-            ResetToInitialMemory();
-            Output = new List<int>();
+            bool programEnded = false;
+            int instructionLength;
+            int ptr;
+
+            if (resetComputer)
+            {
+                ResetToInitialMemory();
+                Output = new List<int>();
+                ptr = 0;
+            }
+            else
+            {
+                ptr = LastPointer;
+            }
+            
             if (noun != null)
                 WorkingMemory[1] = (int)noun;
             if (verb != null)
                 WorkingMemory[2] = (int)verb;
-
-            bool programEnded = false;
-            int ptr = 0;
-            int instructionLength;
 
             while (!programEnded)
             {
@@ -76,6 +88,10 @@ namespace AdventOfCode2019
                 {
                     case Opcode.Halt:
                         instructionLength = 1;
+                        if (OnProgramHalted != null)
+                        {
+                            OnProgramHalted(this, EventArgs.Empty);
+                        }                        
                         programEnded = true;
                         break;
                     case Opcode.Add:
@@ -161,14 +177,18 @@ namespace AdventOfCode2019
                     case Opcode.Input:
                         instructionLength = 2;
                         int locationToUpdate = WorkingMemory[ptr + 1];
-                        if (programInputs != null)
+                        if (programInputs != null && programInputs.Length > 0)
                         {
                             WorkingMemory[locationToUpdate] = programInputs[0];
                             // Remove the input after use
                             programInputs = programInputs.Skip(1).Take(programInputs.Length - 1).ToArray();
-                        }                            
+                        }                    
                         else
-                            throw new InvalidOperationException($"Opcode Get was called, but user input was null.");
+                        {
+                            //Console.WriteLine("Computer awaiting input");
+                            instructionLength = 0;
+                            programEnded = true;
+                        }
                         //Console.WriteLine($"Get instruction updated location {locationToUpdate} to {WorkingMemory[locationToUpdate]}");
                         break;
                     case Opcode.Output:
@@ -309,6 +329,7 @@ namespace AdventOfCode2019
                         throw new InvalidOperationException($"Operation # {(int)opcode} is not a valid Opcode.");
                 }
                 ptr += instructionLength;
+                LastPointer = ptr;
             }
             return WorkingMemory;
         }
