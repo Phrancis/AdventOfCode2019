@@ -11,7 +11,7 @@ namespace AdventOfCode2019
         string ProblemUrl();
         string ProblemTitle();
         string FileName();
-        int SolvePart1();
-        int SolvePart2();
+        object SolvePart1();
+        object SolvePart2();
     }
 }

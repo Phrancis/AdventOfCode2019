@@ -46,13 +46,13 @@ namespace AdventOfCode2019
         /// Solve the problem.
         /// </summary>
         /// <returns>The solution to the problem</returns>
-        public int SolvePart1()
+        public object SolvePart1()
         {
             PopulateMap();
             return _orbitMap.CheckSum();
         }
 
-        public int SolvePart2()
+        public object SolvePart2()
         {
             PopulateMap();
             var map = GetOrbitMap();

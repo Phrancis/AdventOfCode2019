@@ -30,7 +30,7 @@ namespace AdventOfCode2019
         /// Solve Day 8 Part 1.
         /// </summary>
         /// <returns>The result</returns>
-        public int SolvePart1()
+        public object SolvePart1()
         {
             var width = 25;
             var height = 6;
@@ -53,7 +53,7 @@ namespace AdventOfCode2019
         /// Solve Day 8 Part 2.
         /// </summary>
         /// <returns>The result</returns>
-        public int SolvePart2()
+        public object SolvePart2()
         {
             var width = 25;
             var height = 6;
@@ -62,11 +62,11 @@ namespace AdventOfCode2019
             var image = string.Join(Environment.NewLine, imagePixels);
             Console.WriteLine("-- IMAGE --");
             Console.WriteLine("Black on white:");
-            Console.WriteLine(image.Replace('1', ' '));
+            Console.WriteLine(image.Replace('1', ' ').Replace('0', '\u2588'));
             Console.WriteLine("White on black:");
-            Console.WriteLine(image.Replace('0', ' '));
+            Console.WriteLine(image.Replace('0', ' ').Replace('1', '\u2588'));
             var answer = "AURCY";
-            return -1;
+            return answer;
         }
 
         private List<string> ReconstituteImage(IEnumerable<IEnumerable<string>> imageData)

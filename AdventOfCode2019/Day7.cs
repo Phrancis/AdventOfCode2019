@@ -27,7 +27,7 @@ namespace AdventOfCode2019
 
         public string ProblemUrl() => _problemUrl;
 
-        public int SolvePart1()
+        public object SolvePart1()
         {
             List<int> phaseSettings = new List<int>(new int[] { 0, 1, 2, 3, 4 });
             IEnumerable<IEnumerable<int>> phaseCombos = GetPermutations(phaseSettings, phaseSettings.Count);
@@ -39,9 +39,8 @@ namespace AdventOfCode2019
             return outputs.Max();
         }
 
-        public int SolvePart2()
+        public object SolvePart2()
         {
-            //return -1;
             List<int> phaseSettings = new List<int>(new int[] { 5, 6, 7, 8, 9 });
             IEnumerable<IEnumerable<int>> phaseCombos = GetPermutations(phaseSettings, phaseSettings.Count);
             List<int> outputs = new List<int>();

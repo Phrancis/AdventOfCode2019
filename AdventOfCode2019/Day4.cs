@@ -24,7 +24,7 @@ namespace AdventOfCode2019
 
         public string ProblemUrl() => problemUrl;
 
-        public int SolvePart1()
+        public object SolvePart1()
         {
             string[] range = rawInput.Split('-');
             int rangeMin = int.Parse(range[0]);
@@ -40,7 +40,7 @@ namespace AdventOfCode2019
             return QualifiedPasswords.Count;
         }
 
-        public int SolvePart2()
+        public object SolvePart2()
         {
             List<int> newlyQualifiedPasswords = new List<int>();
             foreach (int password in QualifiedPasswords)

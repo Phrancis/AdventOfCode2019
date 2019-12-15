@@ -28,14 +28,14 @@ namespace AdventOfCode2019
 
         public string ProblemUrl() => problemUrl;
 
-        public int SolvePart1()
+        public object SolvePart1()
         {
             int[] programInputs = new int[] { (int)SystemId.AirConditioner };
             computer.ComputeOpcodes(null, null, programInputs);
             return computer.Output[computer.Output.Count - 1];
         }
 
-        public int SolvePart2()
+        public object SolvePart2()
         {
             int[] programInputs = new int[] { (int)SystemId.AirConditioner };
             computer.ComputeOpcodes(null, null, programInputs);

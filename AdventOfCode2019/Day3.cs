@@ -31,7 +31,7 @@ namespace AdventOfCode2019
 
         public string RawInput() => rawInput;
 
-        public int SolvePart1()
+        public object SolvePart1()
         {
             string[] input = rawInput.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             List<string> wire1Data = new List<string>(input[0].Split(','));
@@ -58,7 +58,7 @@ namespace AdventOfCode2019
             return shortestDistance;
         }
 
-        public int SolvePart2()
+        public object SolvePart2()
         {
             List<int> stepsForEachCrossing = new List<int>();
             foreach (Point c in crossings)
