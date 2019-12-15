@@ -26,16 +26,20 @@ namespace AdventOfCode2019
 
         public string ProblemUrl() => _problemUrl;
 
+        /// <summary>
+        /// Solve Day 8 Part 1.
+        /// </summary>
+        /// <returns>The result</returns>
         public int SolvePart1()
         {
-            int width = 25;
-            int height = 6;
-            IEnumerable<IEnumerable<string>> imagePixels = ParseEncodedImage(_rawInput, width, height);
-            int lowestNumOfZeroes = int.MaxValue;
-            List<string> layerWithFewestZeroes = new List<string>();
-            foreach (List<string> layer in imagePixels)
+            var width = 25;
+            var height = 6;
+            var imageData = ParseEncodedImage(_rawInput, width, height);
+            var lowestNumOfZeroes = int.MaxValue;
+            var layerWithFewestZeroes = new List<string>();
+            foreach (List<string> layer in imageData)
             {
-                int numOfZeroes = CountCharInStringList('0', layer);
+                var numOfZeroes = CountCharInStringList('0', layer);
                 if (numOfZeroes < lowestNumOfZeroes)
                 {
                     layerWithFewestZeroes = layer;
@@ -46,6 +50,59 @@ namespace AdventOfCode2019
         }
 
         /// <summary>
+        /// Solve Day 8 Part 2.
+        /// </summary>
+        /// <returns>The result</returns>
+        public int SolvePart2()
+        {
+            var width = 25;
+            var height = 6;
+            var imageData = ParseEncodedImage(_rawInput, width, height);
+            List<string> imagePixels = ReconstituteImage(imageData);
+            var image = string.Join(Environment.NewLine, imagePixels);
+            Console.WriteLine("-- IMAGE --");
+            Console.WriteLine("Black on white:");
+            Console.WriteLine(image.Replace('1', ' '));
+            Console.WriteLine("White on black:");
+            Console.WriteLine(image.Replace('0', ' '));
+            var answer = "AURCY";
+            return -1;
+        }
+
+        private List<string> ReconstituteImage(IEnumerable<IEnumerable<string>> imageData)
+        {
+            var image = new List<string>();
+            var numRows = imageData.ToList()[1].ToList().Count;
+            var lenOfRows = imageData.ToList()[1].ToList()[1].Length;
+            var processedRow = new List<char>();
+
+            for (int row = 0; row < numRows; row++)
+            {
+                foreach (var layer in imageData)
+                {
+                    var currentRow = layer.ToList()[row];
+                    for (int c = 0; c < lenOfRows; c++)
+                    {
+                        if (c >= processedRow.Count)
+                        {
+                            processedRow.Add(currentRow[c]);
+                        }
+                        else
+                        {
+                            if (processedRow[c] == '2')
+                            {
+                                processedRow[c] = currentRow[c];
+                            }
+                        }
+                    }
+                }
+                image.Add(string.Join("", processedRow));
+                processedRow = new List<char>();
+            }
+            return image;
+        }
+
+        /// <summary>
         /// Counts the total number of instances of a character within a list of strings.
         /// </summary>
         /// <param name="ch">The character to count</param>
@@ -53,7 +110,7 @@ namespace AdventOfCode2019
         /// <returns></returns>
         private static int CountCharInStringList(char ch, List<string> list)
         {
-            int numOfChars = 0;
+            var numOfChars = 0;
             foreach (string str in list)
                 foreach (char c in str)
                     if (c == ch)
@@ -97,14 +154,9 @@ namespace AdventOfCode2019
         public static IEnumerable<IEnumerable<T>> ChunkList<T>(IEnumerable<T> input, int size)
         {
             var list = new List<List<T>>();
-            List<T> sourceAsList = input.ToList();
+            var sourceAsList = input.ToList();
             for (int i = 0; i < sourceAsList.Count; i += size)
                 yield return sourceAsList.GetRange(i, Math.Min(size, sourceAsList.Count - i));
-        }
-
-        public int SolvePart2()
-        {
-            return -1;
         }
     }
 }
