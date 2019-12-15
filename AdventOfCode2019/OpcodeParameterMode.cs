@@ -10,5 +10,6 @@ namespace AdventOfCode2019
     {
         Position = 0,
         Value = 1,
+        Relative = 2,
     }
 }

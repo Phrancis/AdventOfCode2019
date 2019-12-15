@@ -9,7 +9,8 @@ namespace AdventOfCode2019
         public List<int> InitialMemory { get; private set; }
         public List<int> WorkingMemory { get; private set; }
         public List<int> Output { get; private set; }
-        public int LastPointer = 0;
+        public int LastPointer { get; private set; }
+        public int RelativeBase { get; private set; }
         public event EventHandler OnProgramHalted;
 
         public IntcodeComputer(List<int> memoryList)
@@ -17,6 +18,8 @@ namespace AdventOfCode2019
             InitialMemory = memoryList;
             WorkingMemory = new List<int>(InitialMemory);
             Output = new List<int>();
+            LastPointer = 0;
+            RelativeBase = 0;
         }
 
         public IntcodeComputer(string rawMemory, char separator = ',')
@@ -88,10 +91,7 @@ namespace AdventOfCode2019
                 {
                     case Opcode.Halt:
                         instructionLength = 1;
-                        if (OnProgramHalted != null)
-                        {
-                            OnProgramHalted(this, EventArgs.Empty);
-                        }                        
+                        OnProgramHalted?.Invoke(this, EventArgs.Empty);
                         programEnded = true;
                         break;
                     case Opcode.Add:
@@ -120,6 +120,9 @@ namespace AdventOfCode2019
                                         break;
                                     case OpcodeParameterMode.Value:
                                         values.Add(instruction[m + 1]);
+                                        break;
+                                    case OpcodeParameterMode.Relative:
+                                        values.Add(WorkingMemory[instruction[m + 1] + RelativeBase]);
                                         break;
                                     default:
                                         throw new InvalidOperationException($"OpcodeParameterMode ID '{modes[m]}' is not valid.");
@@ -160,6 +163,9 @@ namespace AdventOfCode2019
                                         break;
                                     case OpcodeParameterMode.Value:
                                         values.Add(instruction[m + 1]);
+                                        break;
+                                    case OpcodeParameterMode.Relative:
+                                        values.Add(WorkingMemory[instruction[m + 1] + RelativeBase]);
                                         break;
                                     default:
                                         throw new InvalidOperationException($"OpcodeParameterMode ID '{modes[m]}' is not valid.");
@@ -210,6 +216,9 @@ namespace AdventOfCode2019
                                 case OpcodeParameterMode.Value:
                                     outputValue = outputParam;
                                     break;
+                                case OpcodeParameterMode.Relative:
+                                    outputValue = WorkingMemory[outputParam + RelativeBase];
+                                    break;
                                 default:
                                     throw new InvalidOperationException($"OpcodeParameterMode ID '{modes[0]}' is not valid.");
                             }
@@ -231,14 +240,24 @@ namespace AdventOfCode2019
                         else
                         {
                             modes.Reverse();
+
                             if (modes[0] == OpcodeParameterMode.Position)
                                 jumpIfTrueParam1 = WorkingMemory[instruction[1]];
-                            else
+                            else if (modes[0] == OpcodeParameterMode.Value)
                                 jumpIfTrueParam1 = instruction[1];
+                            else if (modes[0] == OpcodeParameterMode.Relative)
+                                jumpIfTrueParam1 = WorkingMemory[instruction[1] + RelativeBase];
+                            else
+                                throw new InvalidOperationException($"OpcodeParameterMode ID '{modes[0]}' is not valid.");
+
                             if (modes[1] == OpcodeParameterMode.Position)
                                 jumpIfTrueParam2 = WorkingMemory[instruction[2]];
-                            else
+                            else if (modes[1] == OpcodeParameterMode.Value)
                                 jumpIfTrueParam2 = instruction[2];
+                            else if (modes[1] == OpcodeParameterMode.Relative)
+                                jumpIfTrueParam2 = WorkingMemory[instruction[2] + RelativeBase];
+                            else
+                                throw new InvalidOperationException($"OpcodeParameterMode ID '{modes[0]}' is not valid.");
                         }
                         if (jumpIfTrueParam1 != 0)
                         {
@@ -261,14 +280,24 @@ namespace AdventOfCode2019
                         else
                         {
                             modes.Reverse();
+
                             if (modes[0] == OpcodeParameterMode.Position)
                                 jumpIfFalseParam1 = WorkingMemory[instruction[1]];
-                            else
+                            else if (modes[0] == OpcodeParameterMode.Value)
                                 jumpIfFalseParam1 = instruction[1];
+                            else if (modes[0] == OpcodeParameterMode.Relative)
+                                jumpIfFalseParam1 = WorkingMemory[instruction[1] + RelativeBase];
+                            else
+                                throw new InvalidOperationException($"OpcodeParameterMode ID '{modes[0]}' is not valid.");
+
                             if (modes[1] == OpcodeParameterMode.Position)
                                 jumpIfFalseParam2 = WorkingMemory[instruction[2]];
-                            else
+                            else if (modes[1] == OpcodeParameterMode.Value)
                                 jumpIfFalseParam2 = instruction[2];
+                            else if (modes[1] == OpcodeParameterMode.Relative)
+                                jumpIfFalseParam2 = WorkingMemory[instruction[2] + RelativeBase];
+                            else
+                                throw new InvalidOperationException($"OpcodeParameterMode ID '{modes[0]}' is not valid.");
                         }
                         if (jumpIfFalseParam1 == 0)
                         {
@@ -291,12 +320,24 @@ namespace AdventOfCode2019
                         else
                         {
                             modes.Reverse();
-                            lessThanParam1 = modes[0] == OpcodeParameterMode.Position
-                                ? WorkingMemory[instruction[1]]
-                                : instruction[1];
-                            lessThanParam2 = modes[1] == OpcodeParameterMode.Position
-                                ? WorkingMemory[instruction[2]]
-                                : instruction[2];
+
+                            if (modes[0] == OpcodeParameterMode.Position)
+                                lessThanParam1 = WorkingMemory[instruction[1]];
+                            else if (modes[0] == OpcodeParameterMode.Value)
+                                lessThanParam1 = instruction[1];
+                            else if (modes[0] == OpcodeParameterMode.Relative)
+                                lessThanParam1 = WorkingMemory[instruction[1] + RelativeBase];
+                            else
+                                throw new InvalidOperationException($"OpcodeParameterMode ID '{modes[0]}' is not valid.");
+
+                            if (modes[1] == OpcodeParameterMode.Position)
+                                lessThanParam2 = WorkingMemory[instruction[2]];
+                            else if (modes[1] == OpcodeParameterMode.Value)
+                                lessThanParam2 = instruction[2];
+                            else if (modes[1] == OpcodeParameterMode.Relative)
+                                lessThanParam2 = WorkingMemory[instruction[2] + RelativeBase];
+                            else
+                                throw new InvalidOperationException($"OpcodeParameterMode ID '{modes[0]}' is not valid.");
                         }
                         WorkingMemory[instruction[3]] = lessThanParam1 < lessThanParam2 ? 1 : 0;
                         //Console.WriteLine($"{opcode}: Param1: {lessThanParam1} | Param2: {lessThanParam2} | Location updated: {instruction[3]}");
@@ -315,15 +356,50 @@ namespace AdventOfCode2019
                         else
                         {
                             modes.Reverse();
-                            equalsParam1 = modes[0] == OpcodeParameterMode.Position
-                                ? WorkingMemory[instruction[1]]
-                                : instruction[1];
-                            equalsParam2 = modes[1] == OpcodeParameterMode.Position
-                                ? WorkingMemory[instruction[2]]
-                                : instruction[2];
+
+                            if (modes[0] == OpcodeParameterMode.Position)
+                                equalsParam1 = WorkingMemory[instruction[1]];
+                            else if (modes[0] == OpcodeParameterMode.Value)
+                                equalsParam1 = instruction[1];
+                            else if (modes[0] == OpcodeParameterMode.Relative)
+                                equalsParam1 = WorkingMemory[instruction[1] + RelativeBase];
+                            else
+                                throw new InvalidOperationException($"OpcodeParameterMode ID '{modes[0]}' is not valid.");
+
+                            if (modes[1] == OpcodeParameterMode.Position)
+                                equalsParam2 = WorkingMemory[instruction[2]];
+                            else if (modes[1] == OpcodeParameterMode.Value)
+                                equalsParam2 = instruction[2];
+                            else if (modes[1] == OpcodeParameterMode.Relative)
+                                equalsParam2 = WorkingMemory[instruction[2] + RelativeBase];
+                            else
+                                throw new InvalidOperationException($"OpcodeParameterMode ID '{modes[0]}' is not valid.");
                         }
                         WorkingMemory[instruction[3]] = equalsParam1 == equalsParam2 ? 1 : 0;
                         //Console.WriteLine($"{opcode}: Param1: {equalsParam1} | Param2: {equalsParam2} | Location updated: {instruction[3]}");
+                        break;
+                    case Opcode.OffsetRelativeBase:
+                        instructionLength = 2;
+                        instruction = WorkingMemory.GetRange(ptr, instructionLength);
+                        int offsetRelativeBaseParam1;
+                        if (modes.Count == 0)
+                        {
+                            offsetRelativeBaseParam1 = WorkingMemory[instruction[1]];
+                        }
+                        else
+                        {
+                            modes.Reverse();
+
+                            if (modes[0] == OpcodeParameterMode.Position)
+                                offsetRelativeBaseParam1 = WorkingMemory[instruction[1]];
+                            else if(modes[0] == OpcodeParameterMode.Value)
+                                offsetRelativeBaseParam1 = instruction[1];
+                            else if (modes[0] == OpcodeParameterMode.Relative)
+                                offsetRelativeBaseParam1 = WorkingMemory[instruction[1] + RelativeBase];
+                            else
+                                throw new InvalidOperationException($"OpcodeParameterMode ID '{modes[0]}' is not valid.");
+                        }
+                        RelativeBase += offsetRelativeBaseParam1;
                         break;
                     default:
                         throw new InvalidOperationException($"Operation # {(int)opcode} is not a valid Opcode.");

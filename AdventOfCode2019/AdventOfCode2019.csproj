@@ -54,6 +54,7 @@
     <Compile Include="Day6.cs" />
     <Compile Include="Day7.cs" />
     <Compile Include="Day8.cs" />
+    <Compile Include="Day9.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +105,7 @@
     <Content Include="D6P1.txt" />
     <Content Include="D7P1.txt" />
     <Content Include="D8P1.txt" />
+    <Content Include="D9P1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
