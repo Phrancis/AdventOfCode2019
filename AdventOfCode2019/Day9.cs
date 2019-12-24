@@ -32,12 +32,12 @@ namespace AdventOfCode2019
         {
             _computer.ComputeOpcodes();
             Console.WriteLine(string.Join(",", _computer.Output));
-            return -1;
+            return "SKIPPED - NOT SOLVED";
         }
 
         public object SolvePart2()
         {
-            return -1;
+            return "SKIPPED - NOT SOLVED";
         }
     }
 }
