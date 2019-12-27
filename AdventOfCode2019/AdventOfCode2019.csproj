@@ -62,6 +62,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FractionClass.cs" />
     <Compile Include="IAdventOfCodeProblem.cs" />
     <Compile Include="InputGetter.cs" />
     <Compile Include="IntcodeComputer.cs" />

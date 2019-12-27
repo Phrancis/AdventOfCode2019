@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
+using Mehroz;
 
 namespace AdventOfCode2019
 {
@@ -83,17 +82,32 @@ namespace AdventOfCode2019
 
         private bool PointIsVisible(Point origin, Point target)
         {
-            decimal? slope = GetSlope(origin, target);
+            Fraction slope;
+            bool slopeIsUndefined = false;
+            int deltaX = target.X - origin.X;
+            int deltaY = target.Y - origin.Y;
+            if (deltaX == 0)
+            {
+                slopeIsUndefined = true;
+                slope = new Fraction();
+            }                
+            else if (deltaY == 0)
+                slope = new Fraction();
+            else
+                slope = new Fraction(deltaY, deltaX);
+
             bool negativeDirection = false;
-            if (slope == null)
+            // Check UP-DOWN direction when deniminator is 0
+            if (slopeIsUndefined)
                 if (target.Y < origin.Y)
                     negativeDirection = true;
-            if (slope == 0 && target.X < origin.X)
+            // Check LEFT-RIGHT direction when numerator is 0
+            if (slope.Numerator == 0 && target.X < origin.X)
                 negativeDirection = true;
             Console.WriteLine($"origin: {origin} | target: {target} | slope: {slope} neg: {negativeDirection}");
 
             // Handling for straight vertical slope
-            if (slope == null)
+            if (slopeIsUndefined)
             {
                 // Note: Negative Y direction visually goes UP on the input grid, since the top-left corner is (0,0)
                 if (negativeDirection)
@@ -108,12 +122,12 @@ namespace AdventOfCode2019
                             // If we find our target point first, then it is visible
                             if (currentPoint.Equals(target))
                             {
-                                Console.WriteLine($"target {target} is visible to origin {origin}");
+                                //Console.WriteLine($"target {target} is visible to origin {origin}");
                                 return true;
                             }                                
                             else
                             {
-                                Console.WriteLine($"{target} is not visible to {origin}, blocked by {currentPoint}");
+                                //Console.WriteLine($"{target} is not visible to {origin}, blocked by {currentPoint}");
                                 return false;
                             }                                
                         }
@@ -131,6 +145,53 @@ namespace AdventOfCode2019
                             // If we find our target point first, then it is visible
                             if (currentPoint.Equals(target))
                             {
+                                //Console.WriteLine($"target {target} is visible to origin {origin}");
+                                return true;
+                            }
+                            else
+                            {
+                                //Console.WriteLine($"{target} is not visible to {origin}, blocked by {currentPoint}");
+                                return false;
+                            }
+                        }
+                    }
+                    throw new InvalidProgramException($"Failed to process with origin: {origin} | target: {target}");
+                }
+            }
+
+            // Handling for straight horizontal slope
+            if (slope == 0)
+            {
+                if (negativeDirection)
+                {
+                    for (int x = origin.X - 1; x >= target.X; x--)
+                    {
+                        Point currentPoint = new Point(x, origin.Y);
+                        if (CoordinateMap.Contains(currentPoint))
+                        {
+                            if (currentPoint.Equals(target))
+                            {
+                                Console.WriteLine($"target {target} is visible to origin {origin}");
+                                return true;
+                            }
+                            else
+                            {
+                                Console.WriteLine($"{target} is not visible to {origin}, blocked by {currentPoint}");
+                                return false;
+                            }
+                        }
+                    }
+                    throw new InvalidProgramException($"Failed to process with origin: {origin} | target: {target}");
+                }
+                else
+                {
+                    for (int x = origin.X + 1; x <= target.X; x++)
+                    {
+                        Point currentPoint = new Point(x, origin.Y);
+                        if (CoordinateMap.Contains(currentPoint))
+                        {
+                            if (currentPoint.Equals(target))
+                            {
                                 Console.WriteLine($"target {target} is visible to origin {origin}");
                                 return true;
                             }
@@ -145,22 +206,20 @@ namespace AdventOfCode2019
                 }
             }
 
-            // Handling for straight horizontal slope
-            if (slope == 0)
-            {
-
-            }
+            // Handling for all other slope values, using point-slope graphing method
+            
 
             return false;
         }
 
-        private decimal? GetSlope(Point origin, Point target)
+        private Fraction GetSlope(Point origin, Point target)
         {
             int deltaX = target.X - origin.X;
             int deltaY = target.Y - origin.Y;
             if (deltaX == 0)
                 return null;
-            return (Decimal)deltaY / deltaX;
+            return new Fraction(deltaY, deltaX);
+            //return (Decimal)deltaY / deltaX;
         }
 
         private Point[] Sort2Points(Point a, Point b)
