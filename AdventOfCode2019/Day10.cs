@@ -41,8 +41,8 @@ namespace AdventOfCode2019
             mapSizeX = rows[0].Length;
             mapSizeY = rows.Length;
             //Console.WriteLine($"Size: X={mapSizeX}, Y={mapSizeY}");
-            for (int y = 0; y < mapSizeX; y++)
-                for (int x = 0; x < mapSizeY; x++)
+            for (int y = 0; y < mapSizeY; y++)
+                for (int x = 0; x < mapSizeX; x++)
                     if (rows[y][x] == marker)
                         CoordinateMap.Add(new Point(x, y));
         }
@@ -56,19 +56,14 @@ namespace AdventOfCode2019
         public object SolvePart1()
         {
             int maxVisiblePoints = 0;
-
-            // SANITY CHECK
-            Point point = new Point(4, 2);
-            Console.WriteLine(point.Equals(new Point(4, 2)));
-
-            //foreach (Point point in CoordinateMap)
-            //{
-            //    List<Point> visiblePoints = GetVisiblePoints(point);
-            //    if (visiblePoints.Count > maxVisiblePoints)
-            //        maxVisiblePoints = visiblePoints.Count;
-            //    Console.WriteLine($"Point: {point} | Visible: {visiblePoints.Count}");
-            //    Console.WriteLine(string.Join(" / ", visiblePoints));
-            //}
+            foreach (Point point in CoordinateMap)
+            {
+                List<Point> visiblePoints = GetVisiblePoints(point);
+                if (visiblePoints.Count > maxVisiblePoints)
+                    maxVisiblePoints = visiblePoints.Count;
+                Console.WriteLine($"Point: {point} | Visible: {visiblePoints.Count}");
+                Console.WriteLine(string.Join(" / ", visiblePoints));
+            }
             return maxVisiblePoints;
         }
 
@@ -88,34 +83,84 @@ namespace AdventOfCode2019
 
         private bool PointIsVisible(Point origin, Point target)
         {
-            int distanceX = target.X - origin.X;
-            int distanceY = target.Y - origin.Y;
-            int intervalX = distanceX > 0 ? GCD(origin.X, distanceX) : -1 * GCD(origin.X, distanceX);
-            int intervalY = distanceY > 0 ? GCD(origin.Y, distanceY) : -1 * GCD(origin.Y, distanceY);
-            Console.WriteLine($"origin: {origin} | target: {target} | Distance: {distanceX}, {distanceY} | Interval: {intervalX}, {intervalY}");
+            decimal? slope = GetSlope(origin, target);
+            bool negativeDirection = false;
+            if (slope == null)
+                if (target.Y < origin.Y)
+                    negativeDirection = true;
+            if (slope == 0 && target.X < origin.X)
+                negativeDirection = true;
+            Console.WriteLine($"origin: {origin} | target: {target} | slope: {slope} neg: {negativeDirection}");
 
-            int runningX = origin.X + intervalX;
-            int runningY = origin.Y + intervalY;
-
-            while (runningX != target.X || runningY != target.Y)
+            // Handling for straight vertical slope
+            if (slope == null)
             {
-                foreach (Point point in CoordinateMap)
+                // Note: Negative Y direction visually goes UP on the input grid, since the top-left corner is (0,0)
+                if (negativeDirection)
                 {
-                    Console.WriteLine($"point: {point} to match X={runningX},Y={runningY} -> {point.Equals(new Point(runningX, runningY))}");
-                    if (point.Equals(new Point(runningX, runningY)))
+                    // Move upwards one Y at a time
+                    for (int y = origin.Y - 1; y >= target.Y; y--)
                     {
-                        if (point == target)
-                            return true;
-                        else
-                            return false;
+                        Point currentPoint = new Point(origin.X, y);
+                        // Check if this point exists in the map
+                        if (CoordinateMap.Contains(currentPoint))
+                        {
+                            // If we find our target point first, then it is visible
+                            if (currentPoint.Equals(target))
+                            {
+                                Console.WriteLine($"target {target} is visible to origin {origin}");
+                                return true;
+                            }                                
+                            else
+                            {
+                                Console.WriteLine($"{target} is not visible to {origin}, blocked by {currentPoint}");
+                                return false;
+                            }                                
+                        }
                     }
-                        
+                    throw new InvalidProgramException($"Failed to process with origin: {origin} | target: {target}");
                 }
-
-                runningX += intervalX;
-                runningY += intervalY;
+                // Note: Negative Y direction visually goes DOWN on the input grid, since the top-left corner is (0,0)
+                else
+                {
+                    for (int y = origin.Y + 1; y <= target.Y; y++)
+                    {
+                        Point currentPoint = new Point(origin.X, y);
+                        if (CoordinateMap.Contains(currentPoint))
+                        {
+                            // If we find our target point first, then it is visible
+                            if (currentPoint.Equals(target))
+                            {
+                                Console.WriteLine($"target {target} is visible to origin {origin}");
+                                return true;
+                            }
+                            else
+                            {
+                                Console.WriteLine($"{target} is not visible to {origin}, blocked by {currentPoint}");
+                                return false;
+                            }
+                        }
+                    }
+                    throw new InvalidProgramException($"Failed to process with origin: {origin} | target: {target}");
+                }
             }
+
+            // Handling for straight horizontal slope
+            if (slope == 0)
+            {
+
+            }
+
             return false;
+        }
+
+        private decimal? GetSlope(Point origin, Point target)
+        {
+            int deltaX = target.X - origin.X;
+            int deltaY = target.Y - origin.Y;
+            if (deltaX == 0)
+                return null;
+            return (Decimal)deltaY / deltaX;
         }
 
         private Point[] Sort2Points(Point a, Point b)
