@@ -59,6 +59,11 @@ namespace AdventOfCode2019
             return maxVisiblePoints;
         }
 
+        public object SolvePart2()
+        {
+            return -1;
+        }
+
         private List<Point> GetVisiblePoints(Point origin)
         {
             List<Point> visiblePoints = new List<Point>();
@@ -216,20 +221,6 @@ namespace AdventOfCode2019
                 }
             }
             throw new InvalidProgramException($"Failed to find visible point with origin: {origin} | target: {target}");
-        }
-
-        private Point[] Sort2Points(Point a, Point b)
-        {
-            if (a.X + a.Y > b.X + b.Y)
-                return new Point[] { a, b };
-            return new Point[] { b, a };
-        }
-
-        private static int GCD(int a, int b) => a == 0 ? b : GCD(b % a, a);
-
-        public object SolvePart2()
-        {
-            return -1;
         }
     }
 }
