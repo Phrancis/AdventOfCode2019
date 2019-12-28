@@ -20,12 +20,7 @@ namespace AdventOfCode2019
         public Day10()
         {            
             _inputGetter = new InputGetter();
-            //_rawInput = _inputGetter.GetRawString(_fileName);
-            _rawInput = @".#..#
-.....
-#####
-....#
-...##";
+            _rawInput = _inputGetter.GetRawString(_fileName);
             CoordinateMap = new List<Point>();
             PopulateMap();
             Console.WriteLine(string.Join(",", CoordinateMap));
@@ -35,11 +30,9 @@ namespace AdventOfCode2019
         {
             if (CoordinateMap.Any())
                 CoordinateMap = new List<Point>();
-            //Console.WriteLine(_rawInput);
             string[] rows = _rawInput.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             mapSizeX = rows[0].Length;
             mapSizeY = rows.Length;
-            //Console.WriteLine($"Size: X={mapSizeX}, Y={mapSizeY}");
             for (int y = 0; y < mapSizeY; y++)
                 for (int x = 0; x < mapSizeX; x++)
                     if (rows[y][x] == marker)
@@ -60,8 +53,8 @@ namespace AdventOfCode2019
                 List<Point> visiblePoints = GetVisiblePoints(point);
                 if (visiblePoints.Count > maxVisiblePoints)
                     maxVisiblePoints = visiblePoints.Count;
-                Console.WriteLine($"Point: {point} | Visible: {visiblePoints.Count}");
-                Console.WriteLine(string.Join(" / ", visiblePoints));
+                //Console.WriteLine($"Point: {point} | Visible: {visiblePoints.Count}");
+                //Console.WriteLine(string.Join(" / ", visiblePoints));
             }
             return maxVisiblePoints;
         }
@@ -86,13 +79,19 @@ namespace AdventOfCode2019
             bool slopeIsUndefined = false;
             int deltaX = target.X - origin.X;
             int deltaY = target.Y - origin.Y;
+
+            // Test for purely vertical slope
             if (deltaX == 0)
             {
                 slopeIsUndefined = true;
+                // This slope value will be ignored, but needs assigned so the program compiles
                 slope = new Fraction();
-            }                
+            }
+            // Test for purely horizontal slope
             else if (deltaY == 0)
+                // This slope value will be ignored, but needs assigned so the program compiles
                 slope = new Fraction();
+            // Any other slope
             else
                 slope = new Fraction(deltaY, deltaX);
 
@@ -104,7 +103,8 @@ namespace AdventOfCode2019
             // Check LEFT-RIGHT direction when numerator is 0
             if (slope.Numerator == 0 && target.X < origin.X)
                 negativeDirection = true;
-            Console.WriteLine($"origin: {origin} | target: {target} | slope: {slope} neg: {negativeDirection}");
+
+            //Console.WriteLine($"origin: {origin} | target: {target} | deltaX={deltaX} deltaY={deltaY} | slope: {slope.ToString()} neg: {negativeDirection}");
 
             // Handling for straight vertical slope
             if (slopeIsUndefined)
@@ -112,22 +112,17 @@ namespace AdventOfCode2019
                 // Note: Negative Y direction visually goes UP on the input grid, since the top-left corner is (0,0)
                 if (negativeDirection)
                 {
-                    // Move upwards one Y at a time
                     for (int y = origin.Y - 1; y >= target.Y; y--)
                     {
                         Point currentPoint = new Point(origin.X, y);
-                        // Check if this point exists in the map
                         if (CoordinateMap.Contains(currentPoint))
                         {
-                            // If we find our target point first, then it is visible
                             if (currentPoint.Equals(target))
                             {
-                                //Console.WriteLine($"target {target} is visible to origin {origin}");
                                 return true;
                             }                                
                             else
                             {
-                                //Console.WriteLine($"{target} is not visible to {origin}, blocked by {currentPoint}");
                                 return false;
                             }                                
                         }
@@ -142,25 +137,21 @@ namespace AdventOfCode2019
                         Point currentPoint = new Point(origin.X, y);
                         if (CoordinateMap.Contains(currentPoint))
                         {
-                            // If we find our target point first, then it is visible
                             if (currentPoint.Equals(target))
                             {
-                                //Console.WriteLine($"target {target} is visible to origin {origin}");
                                 return true;
                             }
                             else
                             {
-                                //Console.WriteLine($"{target} is not visible to {origin}, blocked by {currentPoint}");
                                 return false;
                             }
                         }
                     }
-                    throw new InvalidProgramException($"Failed to process with origin: {origin} | target: {target}");
                 }
             }
 
             // Handling for straight horizontal slope
-            if (slope == 0)
+            if (slope.Numerator == 0)
             {
                 if (negativeDirection)
                 {
@@ -171,17 +162,14 @@ namespace AdventOfCode2019
                         {
                             if (currentPoint.Equals(target))
                             {
-                                Console.WriteLine($"target {target} is visible to origin {origin}");
                                 return true;
                             }
                             else
                             {
-                                Console.WriteLine($"{target} is not visible to {origin}, blocked by {currentPoint}");
                                 return false;
                             }
                         }
                     }
-                    throw new InvalidProgramException($"Failed to process with origin: {origin} | target: {target}");
                 }
                 else
                 {
@@ -192,34 +180,42 @@ namespace AdventOfCode2019
                         {
                             if (currentPoint.Equals(target))
                             {
-                                Console.WriteLine($"target {target} is visible to origin {origin}");
                                 return true;
                             }
                             else
                             {
-                                Console.WriteLine($"{target} is not visible to {origin}, blocked by {currentPoint}");
                                 return false;
                             }
                         }
                     }
-                    throw new InvalidProgramException($"Failed to process with origin: {origin} | target: {target}");
                 }
             }
 
-            // Handling for all other slope values, using point-slope graphing method
-            
+            // Handling for all other slope values
+            bool endLoop = false;
+            long runningX = origin.X;
+            long runningY = origin.Y;
+            while (!endLoop)
+            {
+                runningX += slope.Denominator;
+                runningY += slope.Numerator;
 
-            return false;
-        }
-
-        private Fraction GetSlope(Point origin, Point target)
-        {
-            int deltaX = target.X - origin.X;
-            int deltaY = target.Y - origin.Y;
-            if (deltaX == 0)
-                return null;
-            return new Fraction(deltaY, deltaX);
-            //return (Decimal)deltaY / deltaX;
+                Point currentPoint = new Point((int)runningX, (int)runningY);
+                if (CoordinateMap.Contains(currentPoint))
+                {
+                    if (currentPoint.Equals(target))
+                    {
+                        endLoop = true;
+                        return true;
+                    }
+                    else
+                    {
+                        endLoop = true;
+                        return false;
+                    }
+                }
+            }
+            throw new InvalidProgramException($"Failed to find visible point with origin: {origin} | target: {target}");
         }
 
         private Point[] Sort2Points(Point a, Point b)

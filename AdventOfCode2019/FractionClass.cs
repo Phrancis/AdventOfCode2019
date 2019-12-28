@@ -506,12 +506,13 @@ namespace Mehroz
 				frac.Numerator/=iGCD;
 				frac.Denominator/=iGCD;
 				
-				if ( frac.Denominator<0 )	// if -ve sign in denominator
-				{
-					//pass -ve sign to numerator
-					frac.Numerator*=-1;
-					frac.Denominator*=-1;	
-				}
+                /* NOTE FROM PHRANCIS: Commented out this so that -ve sign in denominator is preserved, this was messing with Day10 calculations. */
+				//if ( frac.Denominator<0 )	// if -ve sign in denominator
+				//{
+				//	//pass -ve sign to numerator
+				//	frac.Numerator*=-1;
+				//	frac.Denominator*=-1;	
+				//}
 			} // end try
 			catch(Exception exp)
 			{
