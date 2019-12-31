@@ -61,7 +61,46 @@ namespace AdventOfCode2019
 
         public object SolvePart2()
         {
+            int maxVisiblePoints = 0;
+            Point stationPoint = new Point();
+            List<Point> pointsVisibleFromStation = new List<Point>();
+            // Find the starting point for the station
+            foreach (Point point in CoordinateMap)
+            {
+                List<Point> visiblePoints = GetVisiblePoints(point);
+                if (visiblePoints.Count > maxVisiblePoints)
+                {
+                    maxVisiblePoints = visiblePoints.Count;
+                    stationPoint = point;
+                    pointsVisibleFromStation = visiblePoints;
+                }
+            }
+            // Set to 90 so that 0 deg is straight "UP"
+            double angleOffset = -90;
+            Console.WriteLine($"stationPoint: {stationPoint}");
+            Console.WriteLine("pointsVisibleFromStation:");
+            Console.WriteLine(string.Join(", ", pointsVisibleFromStation));
+            Dictionary<double, Point> pointAngles = new Dictionary<double, Point>();
+            foreach (Point point in pointsVisibleFromStation)
+            {
+                pointAngles.Add(AngleOf(stationPoint, point, angleOffset), point);
+            }
+            foreach (KeyValuePair<double, Point> kvp in pointAngles)
+            {
+                pointsVisibleFromStation.Remove(kvp.Value);
+                Console.WriteLine($"Point: {kvp.Value} | Angle: {kvp.Key}");
+            }
+
             return -1;
+        }
+
+        public static double AngleOf(Point center, Point target, double angleOffset = 0)
+        {
+            double deltaY = (double)center.Y - target.Y;
+            double deltaX = (double)center.X - target.X;
+            double radians = Math.Atan2(deltaY, deltaX);
+            double angle = radians * (180d / Math.PI);
+            return angle += angleOffset;
         }
 
         private List<Point> GetVisiblePoints(Point origin)
