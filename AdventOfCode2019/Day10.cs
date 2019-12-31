@@ -50,7 +50,7 @@ namespace AdventOfCode2019
             int maxVisiblePoints = 0;
             foreach (Point point in CoordinateMap)
             {
-                List<Point> visiblePoints = GetVisiblePoints(point);
+                List<Point> visiblePoints = GetVisiblePoints(point, CoordinateMap);
                 if (visiblePoints.Count > maxVisiblePoints)
                     maxVisiblePoints = visiblePoints.Count;
                 //Console.WriteLine($"Point: {point} | Visible: {visiblePoints.Count}");
@@ -67,7 +67,7 @@ namespace AdventOfCode2019
             // Find the starting point for the station
             foreach (Point point in CoordinateMap)
             {
-                List<Point> visiblePoints = GetVisiblePoints(point);
+                List<Point> visiblePoints = GetVisiblePoints(point, CoordinateMap);
                 if (visiblePoints.Count > maxVisiblePoints)
                 {
                     maxVisiblePoints = visiblePoints.Count;
@@ -75,23 +75,31 @@ namespace AdventOfCode2019
                     pointsVisibleFromStation = visiblePoints;
                 }
             }
-            // Set to 90 so that 0 deg is straight "UP"
+
+            // Offset by -90 so that 0 deg is straight "UP"
             double angleOffset = -90;
-            Console.WriteLine($"stationPoint: {stationPoint}");
-            Console.WriteLine("pointsVisibleFromStation:");
-            Console.WriteLine(string.Join(", ", pointsVisibleFromStation));
-            Dictionary<double, Point> pointAngles = new Dictionary<double, Point>();
-            foreach (Point point in pointsVisibleFromStation)
+            // Store for points and their respective angle vs. the station point
+            SortedDictionary<double, Point> anglesPerPoint = new SortedDictionary<double, Point>();
+            // Copy coordinate map so we don't modify the original input map
+            List<Point> newCoordinateMap = new List<Point>(CoordinateMap);
+            // List to track which points are removed in which order
+            List<Point> removedPoints = new List<Point>();
+
+            while (removedPoints.Count <= 200)
             {
-                pointAngles.Add(AngleOf(stationPoint, point, angleOffset), point);
-            }
-            foreach (KeyValuePair<double, Point> kvp in pointAngles)
-            {
-                pointsVisibleFromStation.Remove(kvp.Value);
-                Console.WriteLine($"Point: {kvp.Value} | Angle: {kvp.Key}");
+                foreach (Point point in pointsVisibleFromStation)
+                    anglesPerPoint.Add(AngleOf(stationPoint, point, angleOffset), point);
+
+                foreach (KeyValuePair<double, Point> kvp in anglesPerPoint)
+                {
+                    newCoordinateMap.Remove(kvp.Value);
+                    removedPoints.Add(kvp.Value);
+                }
+                pointsVisibleFromStation = GetVisiblePoints(stationPoint, newCoordinateMap);
             }
 
-            return -1;
+            Point _200thPoint = removedPoints[199];
+            return (_200thPoint.X * 100) + _200thPoint.Y;
         }
 
         public static double AngleOf(Point center, Point target, double angleOffset = 0)
@@ -100,13 +108,14 @@ namespace AdventOfCode2019
             double deltaX = (double)center.X - target.X;
             double radians = Math.Atan2(deltaY, deltaX);
             double angle = radians * (180d / Math.PI);
-            return angle += angleOffset;
+            angle += angleOffset;
+            return angle < 0 ? 360d + angle : angle;
         }
 
-        private List<Point> GetVisiblePoints(Point origin)
+        private List<Point> GetVisiblePoints(Point origin, List<Point> map)
         {
             List<Point> visiblePoints = new List<Point>();
-            foreach (Point target in CoordinateMap)
+            foreach (Point target in map)
             {
                 if (target != origin)
                 {
